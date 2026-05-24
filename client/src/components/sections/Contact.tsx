@@ -50,8 +50,14 @@ export const Contact = () => {
   };
 
   const contactDetails = [
-    { labelKey: 'contact.phone', value: '+1 (514) 000-0000', href: 'tel:+15140000000' },
-    { labelKey: 'contact.email', value: 'info@mobisoins.ca', href: 'mailto:info@mobisoins.ca' },
+    {
+      labelKey: 'contact.address',
+      value: '8457 Blvd Newman Bur 118, Lasalle, QC H8N 0A2',
+      href: 'https://maps.google.com/?q=8457+Blvd+Newman+Bur+118,+Lasalle,+QC+H8N+0A2',
+      external: true,
+    },
+    { labelKey: 'contact.phone', value: '(263) 588-6196', href: 'tel:+12635886196' },
+    { labelKey: 'contact.email', value: 'info@mobisoins.com', href: 'mailto:info@mobisoins.com' },
     { labelKey: 'contact.web', value: 'mobisoins.com', href: 'https://mobisoins.com', external: true },
   ];
 
