@@ -56,7 +56,7 @@ export const Contact = () => {
       href: 'https://maps.google.com/?q=8457+Blvd+Newman+Bur+118,+Lasalle,+QC+H8N+0A2',
       external: true,
     },
-    { labelKey: 'contact.phone', value: '(263) 588-6196', href: 'tel:+12635886196' },
+    { labelKey: 'contact.phone', value: '(450) 600-9104', href: 'tel:+14506009104' },
     { labelKey: 'contact.email', value: 'info@mobisoins.com', href: 'mailto:info@mobisoins.com' },
     { labelKey: 'contact.web', value: 'mobisoins.com', href: 'https://mobisoins.com', external: true },
   ];
