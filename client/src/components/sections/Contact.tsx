@@ -95,8 +95,8 @@ export const Contact = () => {
               </h3>
               <ul className="space-y-3">
                 {contactDetails.map((item) => (
-                  <li key={item.labelKey} className="flex items-start gap-2 text-sm" style={{ color: '#5a5a6a' }}>
-                    <span className="font-semibold text-slate-800 shrink-0">{t(item.labelKey)}:</span>
+                  <li key={item.labelKey} className="flex items-start gap-3 text-sm" style={{ color: '#5a5a6a' }}>
+                    <span className="font-semibold text-slate-800 shrink-0 w-20">{t(item.labelKey)}:</span>
                     <a
                       href={item.href}
                       target={item.external ? '_blank' : undefined}
