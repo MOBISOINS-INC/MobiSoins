@@ -50,9 +50,6 @@ export const About = () => {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <p className="text-blue-600 font-semibold text-sm uppercase tracking-wide mb-3">
-              {t('about.badge')}
-            </p>
             <h2 className="text-4xl lg:text-5xl font-bold text-navy-900 mb-4">
               {t('about.title')}
             </h2>
@@ -88,6 +85,9 @@ export const About = () => {
             </h3>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               {t('about.servicesIntro')}
+            </p>
+            <p className="mt-6 inline-block max-w-2xl mx-auto text-sm font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-2xl px-5 py-3">
+              {t('about.insuranceNote')}
             </p>
           </motion.div>
 
