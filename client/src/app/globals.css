@@ -81,7 +81,14 @@
 }
 
 @layer base {
+  html, body {
+    /* Clip any stray horizontal overflow from decorative blobs/transforms so the
+       page can't develop a sliver of horizontal scroll that makes mobile jitter. */
+    overflow-x: hidden;
+    max-width: 100%;
+  }
   body {
+    position: relative;
     background-color: #f7f9fa;
     color: #1a1a24;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;

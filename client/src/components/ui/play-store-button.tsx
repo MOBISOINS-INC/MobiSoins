@@ -4,19 +4,16 @@ import { cn } from '@/lib/utils';
 
 interface PlayStoreButtonProps {
   className?: string;
-  href?: string;
 }
 
-export const PlayStoreButton = ({ className, href = '#' }: PlayStoreButtonProps) => {
+export const PlayStoreButton = ({ className }: PlayStoreButtonProps) => {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div
+      role="button"
+      aria-disabled="true"
       className={cn(
-        'inline-flex items-center gap-3 px-5 py-3 rounded-xl',
+        'inline-flex items-center gap-3 px-5 py-3 rounded-xl select-none cursor-default',
         'bg-[#1a1a24] border border-white/10 text-white',
-        'hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20 transition-all duration-300',
         className
       )}
     >
@@ -28,9 +25,9 @@ export const PlayStoreButton = ({ className, href = '#' }: PlayStoreButtonProps)
         <path d="M14.1996 7.05957L2.09961 0.43957C1.51961 0.13957 0.989609 0.21957 0.599609 0.53957L12.3996 11.9996L14.1996 7.05957Z" fill="#00E676"/>
       </svg>
       <div className="flex flex-col leading-tight">
-        <span className="text-[9px] font-medium tracking-wider text-white/70 uppercase">Get it on</span>
+        <span className="text-[9px] font-medium tracking-wider text-white/70 uppercase">Coming soon</span>
         <span className="text-[15px] font-semibold tracking-tight text-white">Google Play</span>
       </div>
-    </a>
+    </div>
   );
 };
