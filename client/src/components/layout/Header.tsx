@@ -72,7 +72,7 @@ export const Header = () => {
     { name: t('header.faq'), href: '#faq' },
     {
       name: t('header.recruitment'),
-      href: 'https://docs.google.com/forms/d/e/1FAIpQLSd_4xRpjxg-Yml0oJYwec5elHmVFI80Qfibk9HYGZMMnCREBg/viewform',
+      href: 'https://docs.google.com/forms/d/e/1FAIpQLSfFqlaoCKqzrrPMvfQ8E50Jims2JdRN3fpEuq-5q35Ngd-Qsw/viewform',
       external: true,
     },
   ];
