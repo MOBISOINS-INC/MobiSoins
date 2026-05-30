@@ -18,7 +18,14 @@
       "Bash(npx remotion:*)",
       "Bash(node -e \":*)",
       "Bash(npx next:*)",
-      "Bash(./node_modules/.bin/next build:*)"
+      "Bash(./node_modules/.bin/next build:*)",
+      "Bash(sed -n '305,320p' client/src/contexts/LanguageContext.tsx)",
+      "Bash(sed -n '625,640p' client/src/contexts/LanguageContext.tsx)",
+      "Bash(sed -n '385,392p' client/src/contexts/LanguageContext.tsx)",
+      "Bash(npm run *)",
+      "Bash(sed -n '200,215p' client/src/components/layout/Header.tsx)",
+      "Bash(sed -n '292,305p' client/src/components/layout/Header.tsx)",
+      "Bash(npx tsc *)"
     ]
   }
 }

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar } from 'lucide-react';
 import { z } from 'zod';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { PlayStoreButton } from '../ui/play-store-button';
@@ -87,14 +86,12 @@ export const Hero = () => {
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
             >
               <a
-                href="https://calendly.com/mobisoins-info/30min"
+                href="https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative overflow-hidden inline-flex items-center gap-2 px-8 py-4 rounded-full font-medium text-slate-800 bg-white/70 border border-white/90 backdrop-blur-md cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:bg-white/95 group"
-                style={{ boxShadow: '0 15px 35px rgba(0,0,0,0.04), inset 0 0 0 1px rgba(255,255,255,0.5)' }}
+                className="btn-waitlist relative overflow-hidden inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold cursor-pointer group"
               >
-                <span className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/80 to-transparent skew-x-[-20deg] group-hover:left-[150%] transition-all duration-500" />
-                <Calendar className="w-4 h-4" />
+                <span className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-20deg] group-hover:left-[150%] transition-all duration-500" />
                 {t('hero.bookNow')}
               </a>
             </motion.div>
@@ -104,7 +101,7 @@ export const Hero = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-wrap items-center gap-3 mt-2"
+              className="flex flex-wrap items-center gap-4 mt-6"
             >
               <AppStoreButton />
               <PlayStoreButton />

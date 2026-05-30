@@ -46,7 +46,6 @@ export default function RootLayout({
     <html lang="fr">
       <head>
         <link rel="preconnect" href="https://api.web3forms.com" crossOrigin="" />
-        <link rel="preconnect" href="https://calendly.com" crossOrigin="" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://i.pravatar.cc" />
         <link rel="dns-prefetch" href="https://placehold.co" />

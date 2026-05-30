@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 
 type Language = 'FR' | 'EN';
@@ -26,12 +26,23 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>(() => {
-    if (typeof window !== 'undefined') {
-      return navigator.language.startsWith('fr') ? 'FR' : 'EN';
+  // Always start at 'FR' so the server render and the first client render match
+  // (avoids a hydration mismatch). Browser/stored preference is applied after mount.
+  const [language, setLanguageState] = useState<Language>('FR');
+
+  useEffect(() => {
+    const stored = localStorage.getItem('language');
+    if (stored === 'FR' || stored === 'EN') {
+      setLanguageState(stored);
+    } else if (!navigator.language.startsWith('fr')) {
+      setLanguageState('EN');
     }
-    return 'FR';
-  });
+  }, []);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('language', lang);
+  };
 
   const t = (key: string): string => {
     const keys = key.split('.');
@@ -67,7 +78,7 @@ const translations = {
       title: 'Soins Infirmiers',
       titleHighlight: 'Directement à Domicile',
       subtitle: 'Connectez-vous avec des infirmières qualifiées en quelques minutes. Service professionnel, sécurisé et disponible 24/7.',
-      bookNow: 'Réserver Maintenant',
+      bookNow: 'Rejoindre la liste d\'attente',
       pitchDeck: 'Pitch Deck',
       waitlistTitle: 'Liste d\'Attente',
       waitlistSubtitle: 'Soyez le premier averti et obtenez',
@@ -386,7 +397,7 @@ const translations = {
       title: 'Nursing Care',
       titleHighlight: 'Directly at Home',
       subtitle: 'Connect with qualified nurses in minutes. Professional, secure service available 24/7.',
-      bookNow: 'Book Now',
+      bookNow: 'Join Waitlist',
       pitchDeck: 'Pitch Deck',
       waitlistTitle: 'Waiting List',
       waitlistSubtitle: 'Be the first to know and get',

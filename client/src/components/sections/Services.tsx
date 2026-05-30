@@ -300,18 +300,21 @@ export const Services = () => {
                 {t('services.bannerDescription')}
               </motion.p>
 
-              <motion.button
+              <motion.a
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.75 }}
-                onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all hover:shadow-lg hover:-translate-y-0.5"
-                style={{ background: '#1a1a24' }}
+                whileHover={{ y: -3 }}
+                whileTap={{ y: 2 }}
+                href="https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-waitlist inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
               >
                 {t('services.bannerCta')}
                 <ArrowRight className="w-4 h-4" />
-              </motion.button>
+              </motion.a>
             </div>
 
             {/* Flat NA map */}
