@@ -25,7 +25,7 @@ export function NursingMapSection() {
   return (
     <section id="platform" className="relative py-24 lg:py-28 overflow-hidden">
       <div className="container-custom">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+        <div className="grid grid-cols-[1fr_0.82fr] lg:grid-cols-2 gap-4 sm:gap-10 lg:gap-20 items-center">
 
           {/* ── Left: text content ── */}
           <motion.div
@@ -34,45 +34,45 @@ export function NursingMapSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-sm font-semibold uppercase tracking-wider mb-3 text-[#98B690]">
+            <p className="text-[10px] sm:text-sm font-semibold uppercase tracking-wider mb-2 sm:mb-3 text-[#98B690]">
               {t('map.badge')}
             </p>
 
             <h2
-              className="text-4xl lg:text-5xl font-semibold tracking-tight mb-5 text-white"
+              className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-2 sm:mb-5 text-white"
               style={{ letterSpacing: '-0.03em' }}
             >
               {t('map.title')}
             </h2>
 
-            <p className="text-lg font-light leading-relaxed mb-10 max-w-md text-white/60">
+            <p className="text-xs sm:text-lg font-light leading-relaxed mb-5 sm:mb-10 max-w-md text-white/60">
               {t('map.description')}
             </p>
 
             {/* Feature rows with icon + subtext */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3 sm:gap-6">
               {features.map(({ icon: Icon, title, sub }) => (
-                <div key={title} className="flex items-start gap-4">
+                <div key={title} className="flex items-start gap-2.5 sm:gap-4">
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                    className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5"
                     style={{
                       background: 'rgba(78,102,69,0.2)',
                       border: '1px solid rgba(152,182,144,0.35)',
                     }}
                   >
-                    <Icon className="w-5 h-5" style={{ color: '#98B690' }} />
+                    <Icon style={{ color: '#98B690' }} />
                   </div>
-                  <div>
-                    <p className="text-[15px] font-semibold text-white leading-snug">{title}</p>
-                    <p className="text-sm font-light text-white/50 leading-relaxed max-w-sm mt-0.5">{sub}</p>
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-[15px] font-semibold text-white leading-snug">{title}</p>
+                    <p className="text-[11px] sm:text-sm font-light text-white/50 leading-relaxed max-w-sm mt-0.5">{sub}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Coverage footnote */}
-            <div className="mt-10 flex items-center gap-2 text-sm font-light text-white/45">
-              <MapPin className="w-4 h-4 shrink-0" style={{ color: '#98B690' }} />
+            <div className="mt-5 sm:mt-10 flex items-center gap-2 text-[11px] sm:text-sm font-light text-white/45">
+              <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" style={{ color: '#98B690' }} />
               {t('map.footnote')}
             </div>
           </motion.div>
@@ -93,14 +93,14 @@ export function NursingMapSection() {
               <img
                 src="/nurses/nurse-05.jpeg"
                 alt="Infirmière MobiSoins en route vers un patient"
-                className="w-full h-80 md:h-[30rem] object-cover"
+                className="w-full h-56 sm:h-80 md:h-[30rem] object-cover"
               />
               {/* gradient for legibility */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/15 pointer-events-none" />
 
               {/* Live "en route" status chip */}
               <div
-                className="absolute top-4 left-4 flex items-center gap-2.5 rounded-full px-4 py-2"
+                className="absolute top-2 left-2 sm:top-4 sm:left-4 flex items-center gap-1.5 sm:gap-2.5 rounded-full px-2.5 py-1 sm:px-4 sm:py-2"
                 style={{
                   background: 'rgba(3,18,38,0.55)',
                   backdropFilter: 'blur(10px)',
@@ -108,16 +108,16 @@ export function NursingMapSection() {
                   border: '1px solid rgba(255,255,255,0.16)',
                 }}
               >
-                <span className="relative flex h-2.5 w-2.5">
+                <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-[#98B690] opacity-70 animate-ping" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#98B690]" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-[#98B690]" />
                 </span>
-                <span className="text-sm font-medium text-white">{t('map.stepEnRoute')}</span>
-                <span className="text-sm font-semibold text-white/60">· 8 min</span>
+                <span className="text-[11px] sm:text-sm font-medium text-white">{t('map.stepEnRoute')}</span>
+                <span className="text-[11px] sm:text-sm font-semibold text-white/60">· 8 min</span>
               </div>
 
-              {/* Live visit tracker card */}
-              <div className="glass-dark absolute inset-x-4 bottom-4 sm:inset-x-5 sm:bottom-5 px-5 py-4 !rounded-2xl">
+              {/* Live visit tracker card — hidden on the narrow mobile column */}
+              <div className="glass-dark hidden sm:block absolute inset-x-4 bottom-4 sm:inset-x-5 sm:bottom-5 px-5 py-4 !rounded-2xl">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
                     {t('map.trackTitle')}

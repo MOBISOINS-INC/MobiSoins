@@ -89,20 +89,22 @@ export const Footer = () => {
       style={{ background: '#04142a', borderTop: '1px solid rgba(255,255,255,0.07)' }}
     >
 
-      <div className="container-custom py-16 lg:py-20">
+      <div className="container-custom py-10 sm:py-16 lg:py-20">
         <div className="grid w-full gap-10 xl:grid-cols-3 xl:gap-12">
 
           {/* Brand column */}
-          <AnimatedContainer className="flex flex-col gap-5">
-            <Link href="/">
-              <BrandLogo className="h-14 opacity-95" />
+          <AnimatedContainer className="flex items-start gap-4">
+            <Link href="/" className="shrink-0">
+              <BrandLogo className="h-10 opacity-95" />
             </Link>
-            <p className="text-sm font-light leading-relaxed max-w-xs text-white/55">
-              Une plateforme IA de soins infirmiers à domicile au Québec. Connecte des infirmières OIIQ certifiées avec des patients en quelques minutes.
-            </p>
-            <p className="text-xs font-light text-white/40">
-              © {new Date().getFullYear()} MobiSoins Inc. Tous droits réservés.
-            </p>
+            <div className="flex flex-col gap-2">
+              <p className="text-xs sm:text-sm font-light leading-relaxed max-w-xs text-white/55">
+                Une plateforme IA de soins infirmiers à domicile au Québec. Connecte des infirmières OIIQ certifiées avec des patients en quelques minutes.
+              </p>
+              <p className="text-[11px] font-light text-white/40">
+                © {new Date().getFullYear()} MobiSoins Inc. Tous droits réservés.
+              </p>
+            </div>
           </AnimatedContainer>
 
           {/* Link columns */}
@@ -144,30 +146,12 @@ export const Footer = () => {
 
         {/* Bottom bar */}
         <div
-          className="mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
+          className="mt-8 sm:mt-10 pt-5 flex items-center justify-center"
           style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
         >
           <p className="text-xs font-light" style={{ color: 'rgba(255,255,255,0.45)' }}>
             Fait avec soin au Québec 🍁
           </p>
-          <div className="flex items-center gap-1">
-            {[
-              { label: 'Confidentialité', href: '/confidentialite' },
-              { label: 'Conditions', href: '/conditions' },
-              { label: 'Cookies', href: '/cookies' },
-            ].map((item, i) => (
-              <span key={item.label} className="flex items-center">
-                {i > 0 && <span className="mx-2 text-white/20">·</span>}
-                <Link
-                  href={item.href}
-                  className="text-xs font-light transition-colors"
-                  style={{ color: 'rgba(255,255,255,0.45)' }}
-                >
-                  {item.label}
-                </Link>
-              </span>
-            ))}
-          </div>
         </div>
       </div>
     </footer>

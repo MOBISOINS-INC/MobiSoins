@@ -94,13 +94,13 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
   ];
 
   return (
-    <section id="services" className="relative py-24 overflow-hidden">
+    <section id="services" className="relative py-14 sm:py-24 overflow-hidden">
       <div className="container-custom">
 
         {/* ── Heading with word pop-up ── */}
-        <div className="mb-16 max-w-2xl">
+        <div className="mb-10 sm:mb-16 max-w-2xl">
           <h2
-            className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4 leading-tight text-white"
+            className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-3 sm:mb-4 leading-tight text-white"
             style={{ letterSpacing: '-0.03em' }}
           >
             <AnimatedWords
@@ -134,8 +134,8 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
           </motion.p>
         </div>
 
-        {/* ── 3 service cards ── */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
+        {/* ── 3 service cards — triangle (2 + 1 centered) on mobile ── */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mb-10 sm:mb-16 [&>*:nth-child(3)]:col-span-2 [&>*:nth-child(3)]:w-1/2 [&>*:nth-child(3)]:mx-auto md:[&>*:nth-child(3)]:col-span-1 md:[&>*:nth-child(3)]:w-full">
           {cards.map((card, i) => (
             <motion.div
               key={i}
@@ -144,10 +144,10 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="glass-dark !rounded-2xl p-7 flex flex-col"
+              className="glass-dark !rounded-2xl p-3 sm:p-7 flex flex-col"
             >
               {/* Real photo */}
-              <div className="relative mb-6 h-52 rounded-xl overflow-hidden border border-white/10 bg-white/5">
+              <div className="relative mb-3 sm:mb-6 h-28 sm:h-52 rounded-xl overflow-hidden border border-white/10 bg-white/5">
                 <Image
                   src={card.image}
                   alt={card.imageAlt}
@@ -156,32 +156,25 @@ export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {})
                   className="object-cover"
                   style={{ objectPosition: card.objectPosition }}
                 />
-                {/* Legibility gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
-                {/* Floating badge pill */}
-                <div className="absolute top-3 left-3">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/90 border border-white/15 shadow-sm">
-                    {card.icon}
-                    {card.badge}
-                  </span>
-                </div>
+                {/* Subtle bottom gradient (kept light — the badge label lives below the image) */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
               </div>
 
               {/* Text */}
               <div>
-                <div className="flex items-center gap-2 mb-2.5 text-sm font-medium" style={{ color: '#98B690' }}>
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2.5 text-[11px] sm:text-sm font-medium [&_svg]:w-3.5 [&_svg]:h-3.5 sm:[&_svg]:w-auto sm:[&_svg]:h-auto" style={{ color: '#98B690' }}>
                   {card.icon}
-                  <span>{card.badge}</span>
+                  <span className="leading-tight">{card.badge}</span>
                 </div>
-                <h3 className="text-lg font-semibold tracking-tight mb-2 text-white">
+                <h3 className="text-sm sm:text-lg font-semibold tracking-tight mb-0 sm:mb-2 leading-snug text-white">
                   {card.title}
                 </h3>
-                <p className="text-sm font-light leading-relaxed text-white/65">
+                <p className="hidden sm:block text-sm font-light leading-relaxed text-white/65">
                   {card.description}
                 </p>
 
                 {/* Feature bullets */}
-                <ul className="mt-5 pt-5 space-y-2.5 border-t border-white/10">
+                <ul className="hidden sm:block mt-5 pt-5 space-y-2.5 border-t border-white/10">
                   {card.points.map((point, j) => (
                     <li key={j} className="flex items-start gap-2.5">
                       <span

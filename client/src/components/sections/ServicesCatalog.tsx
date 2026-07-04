@@ -50,20 +50,20 @@ export function ServicesCatalog() {
   const lang = language === 'FR' ? 'fr' : 'en';
 
   return (
-    <section className="relative py-16 lg:py-20 overflow-hidden">
+    <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden">
       <div className="container-custom relative">
         {/* Intro */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-2xl mb-12"
+          className="max-w-2xl mb-8 sm:mb-12"
         >
-          <p className="text-sm font-semibold uppercase tracking-wider mb-3 text-[#98B690]">{c.badge}</p>
-          <h1 className="text-4xl lg:text-6xl font-semibold tracking-tight mb-5 text-white" style={{ letterSpacing: '-0.035em' }}>
+          <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2 sm:mb-3 text-[#98B690]">{c.badge}</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-semibold tracking-tight mb-3 sm:mb-5 text-white" style={{ letterSpacing: '-0.035em' }}>
             {c.title}
           </h1>
-          <p className="text-lg font-light leading-relaxed text-white/65">{c.subtitle}</p>
+          <p className="text-base sm:text-lg font-light leading-relaxed text-white/65">{c.subtitle}</p>
         </motion.div>
 
         {/* Feature image band */}
@@ -73,7 +73,7 @@ export function ServicesCatalog() {
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="grid md:grid-cols-3 gap-4 mb-14"
         >
-          <figure className="md:col-span-2 relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl h-[280px] md:h-[420px] group">
+          <figure className="md:col-span-2 relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl h-[190px] sm:h-[280px] md:h-[420px] group">
             <img src="/nurses/hero-nurse.png" alt={c.featureCaption}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               style={{ objectPosition: '50% 20%' }} />
@@ -84,26 +84,19 @@ export function ServicesCatalog() {
               <span className="text-sm font-medium text-white">{c.featureCaption}</span>
             </figcaption>
           </figure>
-          <div className="grid grid-rows-2 gap-4">
-            <figure className="relative rounded-3xl overflow-hidden border border-white/10 shadow-xl h-[200px] group">
-              <img src="/nurses/nurse-blonde-kid.jpeg" alt={c.vaccineCaption}
-                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent pointer-events-none" />
-              <figcaption className="absolute bottom-3 left-3 text-xs font-medium text-white/90">{c.vaccineCaption}</figcaption>
-            </figure>
-            <figure className="relative rounded-3xl overflow-hidden border border-white/10 shadow-xl h-[200px] group hidden md:block">
-              <img src="/nurses/elder-06.jpeg" alt={c.seniorCaption}
-                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent pointer-events-none" />
-              <figcaption className="absolute bottom-3 left-3 text-xs font-medium text-white/90">{c.seniorCaption}</figcaption>
-            </figure>
-          </div>
+          {/* Secondary image — desktop only, fills the side column */}
+          <figure className="hidden md:block relative rounded-3xl overflow-hidden border border-white/10 shadow-xl md:h-[420px] group">
+            <img src="/nurses/elder-06.jpeg" alt={c.seniorCaption}
+              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent pointer-events-none" />
+            <figcaption className="absolute bottom-3 left-3 text-xs font-medium text-white/90">{c.seniorCaption}</figcaption>
+          </figure>
         </motion.div>
 
         <p className="text-xs font-medium uppercase tracking-widest text-white/35 mb-5">{c.hint}</p>
 
         {/* Catalog — one card per expertise; each service links to its detail page */}
-        <div className="grid md:grid-cols-2 gap-5 items-start">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5 items-start">
           {SERVICE_CATEGORIES.map((cat, ci) => {
             const Icon = ICONS[cat.icon];
             return (
@@ -113,14 +106,14 @@ export function ServicesCatalog() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: (ci % 2) * 0.06, ease: 'easeOut' }}
-                className="glass-dark !rounded-2xl p-6"
+                className="glass-dark !rounded-2xl p-3.5 sm:p-6"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                  <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5"
                     style={{ background: 'rgba(78,102,69,0.2)', border: '1px solid rgba(152,182,144,0.35)' }}>
-                    <Icon className="w-5 h-5" style={{ color: '#98B690' }} />
+                    <Icon style={{ color: '#98B690' }} />
                   </span>
-                  <h3 className="text-base font-semibold text-white leading-snug">{lang === 'fr' ? cat.nameFr : cat.nameEn}</h3>
+                  <h3 className="text-[13px] sm:text-base font-semibold text-white leading-snug">{lang === 'fr' ? cat.nameFr : cat.nameEn}</h3>
                 </div>
 
                 <ul className="flex flex-col divide-y divide-white/[0.06]">
@@ -128,12 +121,12 @@ export function ServicesCatalog() {
                     <li key={s.slug}>
                       <Link
                         href={`/services/${s.slug}`}
-                        className="flex items-center justify-between gap-3 py-3 group"
+                        className="flex items-center justify-between gap-2 sm:gap-3 py-2 sm:py-3 group"
                       >
-                        <span className="text-sm text-white/75 group-hover:text-white transition-colors">
+                        <span className="text-xs sm:text-sm text-white/75 group-hover:text-white transition-colors leading-snug">
                           {lang === 'fr' ? s.nameFr : s.nameEn}
                         </span>
-                        <ArrowRight className="w-4 h-4 shrink-0 text-white/35 transition-all group-hover:text-[#98B690] group-hover:translate-x-0.5" />
+                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 text-white/35 transition-all group-hover:text-[#98B690] group-hover:translate-x-0.5" />
                       </Link>
                     </li>
                   ))}

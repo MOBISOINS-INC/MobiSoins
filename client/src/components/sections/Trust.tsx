@@ -78,29 +78,29 @@ export const Trust = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="trust" className="relative py-16">
+    <section id="trust" className="relative py-14 sm:py-16">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-10"
+          className="mb-6 sm:mb-10"
         >
           <h2
-            className="text-4xl md:text-5xl font-semibold tracking-tight mb-3 text-white"
+            className="text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight mb-2 sm:mb-3 text-white"
             style={{ letterSpacing: '-0.03em' }}
           >
             {t('trust.title')}
           </h2>
-          <p className="text-lg max-w-xl font-light text-white/60">
+          <p className="text-sm sm:text-lg max-w-xl font-light text-white/60">
             {t('trust.subtitle')}
           </p>
         </motion.div>
 
-        <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[480px] overflow-hidden">
-          <TestimonialsColumn testimonials={firstColumn} duration={18} />
-          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={22} />
-          <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={20} />
+        <div className="flex justify-center gap-2 sm:gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[600px] sm:max-h-[480px] overflow-hidden">
+          <TestimonialsColumn testimonials={firstColumn} className="w-[31.5%] shrink-0 md:w-auto md:shrink" duration={18} />
+          <TestimonialsColumn testimonials={secondColumn} className="w-[31.5%] shrink-0 md:w-auto md:shrink" duration={22} />
+          <TestimonialsColumn testimonials={thirdColumn} className="w-[31.5%] shrink-0 md:w-auto md:shrink" duration={20} />
         </div>
       </div>
     </section>

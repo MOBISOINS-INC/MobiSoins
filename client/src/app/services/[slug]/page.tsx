@@ -199,9 +199,9 @@ function ServiceBody({
         </aside>
       </div>
 
-      {/* Related services */}
+      {/* Related services — hidden on mobile to keep the page focused */}
       {siblings.length > 0 && (
-        <section className="relative mt-16 pt-10 border-t border-white/10">
+        <section className="relative mt-16 pt-10 border-t border-white/10 hidden sm:block">
           <h2 className="text-sm font-semibold uppercase tracking-widest text-white/60 mb-5">{c.related}</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {siblings.map((s) => (

@@ -48,7 +48,7 @@ export const HowItWorks = () => {
   return (
     <section id="how-it-works" className="relative py-20 lg:py-24 overflow-hidden">
       <div className="container-custom">
-        <div className="grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-16 lg:gap-24 items-stretch">
+        <div className="grid grid-cols-[1fr_0.82fr] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-4 sm:gap-10 lg:gap-24 items-center">
 
           {/* Left: title + vertical process timeline */}
           <div className="relative z-10 flex flex-col justify-center">
@@ -57,15 +57,15 @@ export const HowItWorks = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: "easeOut" as const }}
-              className="mb-14"
+              className="mb-6 sm:mb-14"
             >
               <h2
-                className="text-5xl md:text-6xl font-semibold tracking-tight mb-5 text-white"
+                className="text-2xl sm:text-4xl md:text-6xl font-semibold tracking-tight mb-2 sm:mb-5 text-white"
                 style={{ letterSpacing: '-0.035em' }}
               >
                 {t('howItWorks.title')}
               </h2>
-              <p className="text-lg font-light max-w-md text-white/60 leading-relaxed">
+              <p className="text-xs sm:text-base md:text-lg font-light max-w-md text-white/60 leading-relaxed">
                 {t('howItWorks.subtitle')}
               </p>
             </motion.div>
@@ -74,11 +74,11 @@ export const HowItWorks = () => {
             <div className="relative">
               {/* Connector line running through the nodes */}
               <div
-                className="absolute top-7 bottom-7 left-7 w-px"
+                className="absolute top-5 bottom-5 left-5 sm:top-7 sm:bottom-7 sm:left-7 w-px"
                 style={{ background: 'linear-gradient(to bottom, rgba(152,182,144,0.55), rgba(152,182,144,0.15) 55%, rgba(255,255,255,0.04))' }}
               />
 
-              <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-5 sm:gap-10">
                 {steps.map((step, i) => (
                   <motion.div
                     key={i}
@@ -86,11 +86,11 @@ export const HowItWorks = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.14, duration: 0.6, ease: "easeOut" as const }}
-                    className="relative flex items-start gap-6"
+                    className="relative flex items-start gap-3 sm:gap-6"
                   >
                     {/* Icon node */}
                     <div
-                      className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+                      className="relative z-10 w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-[22px] sm:[&_svg]:h-[22px]"
                       style={{
                         background: 'rgba(78,102,69,0.2)',
                         border: '1px solid rgba(152,182,144,0.4)',
@@ -100,14 +100,14 @@ export const HowItWorks = () => {
                     >
                       {step.icon}
                     </div>
-                    <div className="pt-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] mb-2" style={{ color: 'rgba(152,182,144,0.85)' }}>
+                    <div className="pt-0.5 sm:pt-1 min-w-0">
+                      <p className="text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] sm:tracking-[0.22em] mb-1 sm:mb-2" style={{ color: 'rgba(152,182,144,0.85)' }}>
                         {step.num}
                       </p>
-                      <h3 className="text-xl font-semibold mb-1.5 leading-snug text-white">
+                      <h3 className="text-sm sm:text-xl font-semibold mb-1 sm:mb-1.5 leading-snug text-white">
                         {t(step.titleKey)}
                       </h3>
-                      <p className="text-[15px] font-light leading-relaxed text-white/55 max-w-sm">
+                      <p className="text-[11px] sm:text-[15px] font-light leading-relaxed text-white/55 max-w-sm">
                         {t(step.descKey)}
                       </p>
                     </div>
@@ -132,7 +132,7 @@ export const HowItWorks = () => {
               style={{ background: 'radial-gradient(50% 50% at 55% 42%, rgba(78,102,69,0.22), transparent 70%)' }}
             />
             <div
-              className="relative w-full min-h-[460px] lg:h-full lg:min-h-[560px] rounded-[2.5rem] overflow-hidden shadow-[0_50px_120px_rgba(0,0,0,0.6)]"
+              className="relative w-full min-h-[220px] sm:min-h-[400px] lg:min-h-[480px] max-h-[540px] rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-[0_50px_120px_rgba(0,0,0,0.6)]"
               style={{ border: '1px solid rgba(255,255,255,0.12)' }}
             >
               <Image
@@ -156,14 +156,14 @@ export const HowItWorks = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.45, duration: 0.5, ease: "easeOut" as const }}
-                className="glass-dark absolute inset-x-5 bottom-5 sm:inset-x-7 sm:bottom-7 flex items-center gap-3.5 px-5 py-4 !rounded-2xl"
+                className="glass-dark absolute inset-x-2 bottom-2 sm:inset-x-7 sm:bottom-7 flex items-center gap-2 sm:gap-3.5 px-2.5 py-2 sm:px-5 sm:py-4 !rounded-xl sm:!rounded-2xl"
               >
-                <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse block shrink-0" />
-                <div>
-                  <p className="text-sm font-semibold leading-tight text-white">
+                <span className="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-green-400 animate-pulse block shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-sm font-semibold leading-tight text-white truncate">
                     Infirmière OIIQ
                   </p>
-                  <p className="text-xs font-light text-white/60">
+                  <p className="text-[9px] sm:text-xs font-light text-white/60 truncate">
                     Soins professionnels à domicile
                   </p>
                 </div>

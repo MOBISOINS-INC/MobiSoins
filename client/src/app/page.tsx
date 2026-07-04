@@ -5,6 +5,7 @@ import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { Hero } from '../components/sections/Hero';
 import { LogoCloud } from '../components/sections/LogoCloud';
+import { MobileSectionDivider } from '../components/ui/MobileSectionDivider';
 
 function SectionLoader() {
   return (
@@ -52,9 +53,13 @@ export default function Home() {
           <HowItWorks />
         </div>
 
+        <MobileSectionDivider />
         <NursingMapSection />
+        <MobileSectionDivider variant="route" />
         <PatientsSection />
+        <MobileSectionDivider variant="stars" />
         <Trust />
+        <MobileSectionDivider variant="plane" />
         <Newsletter />
       </main>
       <Footer />

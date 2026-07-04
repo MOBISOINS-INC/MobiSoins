@@ -2,15 +2,21 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { BrandLogo } from '../ui/BrandLogo';
+
+const WAITLIST_URL =
+  'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
 
 export const Header = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [articlesOpen, setArticlesOpen] = useState(false);
+  const [mobileArticlesOpen, setMobileArticlesOpen] = useState(false);
+  const [mobileLangOpen, setMobileLangOpen] = useState(false);
   const lastScrollY = useRef(0);
   const articlesRef = useRef<HTMLDivElement>(null);
   const { language, setLanguage, t } = useLanguage();
@@ -86,6 +92,11 @@ export const Header = () => {
   // once scrolled into content it becomes a frosted dark navy bar (matching the
   // dark page theme) with light text.
   const overHero = !scrolled;
+  // Persistent waitlist CTA: always shown on inner pages; on the home page it
+  // fades in only after scrolling past the hero (which has its own CTA).
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+  const showWaitlistCta = !isHome || scrolled;
   const navColor = overHero ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.72)';
   const navHoverColor = '#ffffff';
   const navHoverBg = overHero ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.1)';
@@ -96,20 +107,25 @@ export const Header = () => {
       transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
       className="fixed top-0 left-0 w-full z-50"
       style={{
-        background: overHero
+        // When the mobile menu is open, the bar goes solid dark so the hero photo
+        // doesn't bleed through behind the logo (mobile-only — the menu never opens
+        // on desktop, so the web layout is unaffected).
+        background: isMobileOpen
+          ? 'rgba(6,20,40,0.98)'
+          : overHero
           ? 'linear-gradient(to bottom, rgba(3,18,38,0.55) 0%, rgba(3,18,38,0.28) 55%, rgba(3,18,38,0) 100%)'
           : 'linear-gradient(to bottom, rgba(6,20,40,0.92) 64%, rgba(6,20,40,0.7) 82%, rgba(6,20,40,0))',
-        backdropFilter: overHero ? 'none' : 'blur(16px)',
-        WebkitBackdropFilter: overHero ? 'none' : 'blur(16px)',
+        backdropFilter: overHero && !isMobileOpen ? 'none' : 'blur(16px)',
+        WebkitBackdropFilter: overHero && !isMobileOpen ? 'none' : 'blur(16px)',
         transition: 'background 0.3s ease',
       }}
     >
       <div className="container-custom">
-        <div className="flex h-24 items-center justify-between gap-6">
+        <div className="flex h-16 md:h-24 items-center justify-between gap-6">
 
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
-            <BrandLogo className="h-16 hover:opacity-90 transition-opacity duration-200" glow={overHero} />
+            <BrandLogo className="h-10 sm:h-12 md:h-16 hover:opacity-90 transition-opacity duration-200" glow={overHero} />
           </Link>
 
           {/* Desktop nav */}
@@ -216,16 +232,36 @@ export const Header = () => {
               ))}
             </div>
 
-            {/* CTA */}
-            <button
-              onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
-              className="hidden md:inline-flex items-center justify-center px-5 py-2 text-[13px] font-semibold rounded-lg transition-all"
-              style={{ background: '#ffffff', color: '#0a1f38' }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = '0.88')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = '1')}
-            >
-              {t('header.downloadApp')}
-            </button>
+            {/* Persistent waitlist CTA — fades in past the hero on home, always on inner pages */}
+            <AnimatePresence>
+              {showWaitlistCta && (
+                <motion.a
+                  key="waitlist-cta"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  href={WAITLIST_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-semibold text-white overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
+                  style={{
+                    background: 'linear-gradient(180deg, #0a4a85 0%, #003366 55%, #00264d 100%)',
+                    boxShadow: '0 8px 22px rgba(0,51,102,0.4), inset 0 1px 0 rgba(255,255,255,0.18)',
+                  }}
+                >
+                  <span className="absolute top-0 -left-full w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg] group-hover:left-[150%] transition-all duration-700" />
+                  <span className="relative">{t('header.joinWaitlist')}</span>
+                  <svg
+                    className="relative transition-transform duration-300 group-hover:translate-x-0.5"
+                    width="15" height="15" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14" /><path d="M13 6l6 6-6 6" />
+                  </svg>
+                </motion.a>
+              )}
+            </AnimatePresence>
 
             {/* Mobile toggle */}
             <button
@@ -260,61 +296,120 @@ export const Header = () => {
             className="md:hidden overflow-hidden"
             style={{ background: 'rgba(6,20,40,0.98)', borderTop: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
           >
-            <div className="container-custom py-4 flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  target={link.external ? '_blank' : undefined}
-                  rel={link.external ? 'noopener noreferrer' : undefined}
-                  className="px-4 py-3 text-sm font-medium rounded-xl transition-colors"
-                  style={{ color: '#ffffff' }}
-                  onClick={() => setIsMobileOpen(false)}
-                >
-                  {link.name}
-                </a>
-              ))}
-
-              {/* Articles in mobile menu */}
-              <div className="px-4 pt-2 pb-1">
-                <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.45)' }}>Articles</p>
-                <div className="flex flex-col gap-1">
-                  {articles.map((a, i) => (
-                    <Link
-                      key={i}
-                      href={a.href}
-                      className="flex items-center gap-2.5 py-2"
-                      onClick={() => setIsMobileOpen(false)}
-                    >
-                      <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0">
-                        <img src={a.img} alt={a.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
-                      </div>
-                      <p className="text-xs font-medium line-clamp-1" style={{ color: '#ffffff' }}>{a.title}</p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div className="h-px mx-2 my-2" style={{ background: 'rgba(255,255,255,0.08)' }} />
-              <div className="flex items-center gap-2 px-4">
-                {(['FR', 'EN'] as const).map((lang) => (
-                  <button
-                    key={lang}
-                    onClick={() => { setLanguage(lang); setIsMobileOpen(false); }}
-                    className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                    style={language === lang ? { background: '#ffffff', color: '#0a1f38' } : { color: 'rgba(255,255,255,0.7)', background: 'rgba(255,255,255,0.08)' }}
+            <div className="container-custom py-3 flex flex-col">
+              {/* Nav links — 2-up grid to keep the menu compact */}
+              <div className="grid grid-cols-3 gap-x-3 gap-y-1">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    target={link.external ? '_blank' : undefined}
+                    rel={link.external ? 'noopener noreferrer' : undefined}
+                    className="py-2 text-sm font-medium text-white/85 active:text-white transition-colors whitespace-nowrap"
+                    onClick={() => setIsMobileOpen(false)}
                   >
-                    {lang}
-                  </button>
+                    {link.name}
+                  </a>
                 ))}
               </div>
-              <button
-                onClick={() => { setIsMobileOpen(false); document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="mt-2 mx-2 py-3 text-sm font-semibold rounded-xl"
-                style={{ background: '#ffffff', color: '#0a1f38' }}
-              >
-                {t('header.downloadApp')}
-              </button>
+
+              {/* Articles + Language triggers — same row */}
+              <div className="grid grid-cols-3 gap-x-3">
+                <button
+                  onClick={() => setMobileArticlesOpen((v) => !v)}
+                  className="flex items-center gap-1.5 py-2 text-[15px] font-medium text-white/85 active:text-white transition-colors"
+                  aria-expanded={mobileArticlesOpen}
+                >
+                  <span>Articles</span>
+                  <svg
+                    width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                    className="transition-transform duration-300"
+                    style={{ color: 'rgba(255,255,255,0.6)', transform: mobileArticlesOpen ? 'rotate(180deg)' : 'none' }}
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+
+                <button
+                  onClick={() => setMobileLangOpen((v) => !v)}
+                  className="flex items-center gap-2 py-2 text-[15px] font-medium text-white/85 active:text-white transition-colors"
+                  aria-expanded={mobileLangOpen}
+                >
+                  <span>{t('header.language')}</span>
+                  <span className="flex items-center gap-1.5" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                    <span className="text-xs font-semibold tracking-wide">{language}</span>
+                    <svg
+                      width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                      className="transition-transform duration-300"
+                      style={{ transform: mobileLangOpen ? 'rotate(180deg)' : 'none' }}
+                    >
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+
+              {/* Articles panel — full width below the row */}
+              <AnimatePresence initial={false}>
+                {mobileArticlesOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="flex flex-col gap-1 px-4 pb-2 pt-1">
+                      {articles.map((a, i) => (
+                        <Link
+                          key={i}
+                          href={a.href}
+                          className="flex items-center gap-2.5 py-2"
+                          onClick={() => setIsMobileOpen(false)}
+                        >
+                          <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0">
+                            <img src={a.img} alt={a.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
+                          </div>
+                          <p className="text-xs font-medium line-clamp-1" style={{ color: '#ffffff' }}>{a.title}</p>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Language panel — full width below the row */}
+              <AnimatePresence initial={false}>
+                {mobileLangOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="flex flex-col px-4 pt-1 pb-1">
+                      {([['FR', 'Français'], ['EN', 'English']] as const).map(([code, label]) => (
+                        <button
+                          key={code}
+                          onClick={() => { setLanguage(code); setMobileLangOpen(false); setIsMobileOpen(false); }}
+                          className="flex items-center justify-between py-2 text-sm"
+                          style={{ color: language === code ? '#ffffff' : 'rgba(255,255,255,0.6)' }}
+                        >
+                          <span>{label}</span>
+                          {language === code && (
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#98B690" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         )}
