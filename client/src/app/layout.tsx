@@ -49,7 +49,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://i.pravatar.cc" />
         <link rel="dns-prefetch" href="https://placehold.co" />
       </head>
-      <body style={{ background: '#ffffff' }}>
+      <body style={{ background: '#04142a' }}>
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>

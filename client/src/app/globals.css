@@ -86,10 +86,12 @@
        page can't develop a sliver of horizontal scroll that makes mobile jitter. */
     overflow-x: hidden;
     max-width: 100%;
+    /* Dark base so mobile overscroll (rubber-band) never flashes white. */
+    background-color: #04142a;
   }
   body {
     position: relative;
-    background-color: #f7f9fa;
+    background-color: #04142a;
     color: #1a1a24;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
