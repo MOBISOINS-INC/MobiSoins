@@ -8,7 +8,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 
 const RawInput = ({ className = '', ...props }: React.InputHTMLAttributes<HTMLInputElement>) => (
   <input
-    className={`flex h-10 w-full rounded-xl border border-black/12/80 bg-white/60 backdrop-blur-sm px-4 py-2 text-sm text-slate-800 placeholder:text-slate-400 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:border-slate-300 focus-visible:bg-white/80 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+    className={`flex h-10 w-full rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm px-4 py-2 text-sm text-white placeholder:text-white/40 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:border-white/25 focus-visible:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     {...props}
   />
 );
@@ -62,7 +62,7 @@ export const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-32" style={{ background: 'rgba(255,255,255,0.82)' }}>
+    <section id="contact" className="relative py-24">
       <div className="container-custom">
         <div className="mx-auto flex max-w-screen-xl flex-col justify-between gap-12 lg:flex-row lg:gap-20">
 
@@ -76,32 +76,41 @@ export const Contact = () => {
           >
             <div className="text-center lg:text-left">
               <h2
-                className="mb-3 text-5xl font-semibold tracking-tight lg:text-6xl"
-                style={{ color: '#1a1a24', letterSpacing: '-0.04em' }}
+                className="mb-3 text-5xl font-semibold tracking-tight lg:text-6xl text-white"
+                style={{ letterSpacing: '-0.04em' }}
               >
                 {t('contact.title')}
               </h2>
-              <p className="font-light leading-relaxed" style={{ color: '#5a5a6a' }}>
+              <p className="font-light leading-relaxed text-white/60">
                 {t('contact.description')}
               </p>
             </div>
 
+            {/* Warm care photo — bridges the intro and the details */}
+            <div className="overflow-hidden rounded-2xl border border-white/10 shadow-xl">
+              <img
+                src="/nurses/contact-nurse.jpeg"
+                alt="Infirmière MobiSoins prenant soin d'un enfant"
+                className="w-full h-48 sm:h-52 object-cover"
+              />
+            </div>
+
             <div className="mx-auto w-fit lg:mx-0">
               <h3
-                className="mb-6 text-center text-2xl font-semibold lg:text-left"
-                style={{ color: '#1a1a24', letterSpacing: '-0.02em' }}
+                className="mb-6 text-center text-2xl font-semibold lg:text-left text-white"
+                style={{ letterSpacing: '-0.02em' }}
               >
                 {t('contact.detailsTitle')}
               </h3>
               <ul className="space-y-3">
                 {contactDetails.map((item) => (
-                  <li key={item.labelKey} className="flex items-start gap-3 text-sm" style={{ color: '#5a5a6a' }}>
-                    <span className="font-semibold text-slate-800 shrink-0 w-20">{t(item.labelKey)}:</span>
+                  <li key={item.labelKey} className="flex items-start gap-3 text-sm text-white/60">
+                    <span className="font-semibold text-white/85 shrink-0 w-20">{t(item.labelKey)}:</span>
                     <a
                       href={item.href}
                       target={item.external ? '_blank' : undefined}
                       rel={item.external ? 'noopener noreferrer' : undefined}
-                      className="underline underline-offset-2 hover:text-slate-800 transition-colors"
+                      className="underline underline-offset-2 hover:text-white transition-colors"
                     >
                       {item.value}
                     </a>
@@ -117,43 +126,44 @@ export const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="mx-auto w-full max-w-screen-md"
+            className="mx-auto w-full max-w-lg"
           >
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col gap-6 rounded-[2rem] border border-black/12 bg-white/40 backdrop-blur-xl p-8 md:p-10 shadow-[0_8px_32px_rgba(0,0,0,0.05)]"
+              className="glass-dark flex flex-col gap-5 !rounded-3xl p-6 md:p-7"
             >
               {/* Name row */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="grid w-full items-center gap-2">
-                  <Label htmlFor="firstname">{t('contact.firstName')}</Label>
+                  <Label htmlFor="firstname" className="text-white/70">{t('contact.firstName')}</Label>
                   <RawInput type="text" id="firstname" name="firstname" placeholder={t('contact.firstNamePlaceholder')} required />
                 </div>
                 <div className="grid w-full items-center gap-2">
-                  <Label htmlFor="lastname">{t('contact.lastName')}</Label>
+                  <Label htmlFor="lastname" className="text-white/70">{t('contact.lastName')}</Label>
                   <RawInput type="text" id="lastname" name="lastname" placeholder={t('contact.lastNamePlaceholder')} required />
                 </div>
               </div>
 
               {/* Email */}
               <div className="grid w-full items-center gap-2">
-                <Label htmlFor="email">{t('contact.emailLabel')}</Label>
+                <Label htmlFor="email" className="text-white/70">{t('contact.emailLabel')}</Label>
                 <RawInput type="email" id="email" name="email" placeholder={t('contact.emailPlaceholder')} required />
               </div>
 
               {/* Subject */}
               <div className="grid w-full items-center gap-2">
-                <Label htmlFor="subject">{t('contact.subject')}</Label>
+                <Label htmlFor="subject" className="text-white/70">{t('contact.subject')}</Label>
                 <RawInput type="text" id="subject" name="subject" placeholder={t('contact.subjectPlaceholder')} required />
               </div>
 
               {/* Message */}
               <div className="grid w-full gap-2">
-                <Label htmlFor="message">{t('contact.message')}</Label>
+                <Label htmlFor="message" className="text-white/70">{t('contact.message')}</Label>
                 <Textarea
                   id="message"
                   name="message"
                   placeholder={t('contact.messagePlaceholder')}
+                  className="min-h-[96px] border-white/10 bg-white/5 text-white placeholder:text-white/40 focus-visible:ring-white/20 focus-visible:border-white/25 focus-visible:bg-white/[0.08]"
                   required
                 />
               </div>
@@ -162,13 +172,13 @@ export const Contact = () => {
               <button
                 type="submit"
                 disabled={sending || sent}
-                className="w-full h-12 rounded-full text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 transition-all duration-300 shadow-lg shadow-slate-900/10 hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                className="w-full h-12 rounded-full text-sm font-semibold text-[#0a1f38] bg-white hover:bg-white/90 transition-all duration-300 shadow-lg shadow-black/20 hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               >
                 {sent ? t('contact.sent') : sending ? t('contact.sending') : t('contact.send')}
               </button>
 
               {sent && (
-                <p className="text-center text-sm text-emerald-600 font-medium">
+                <p className="text-center text-sm text-[#98B690] font-medium">
                   {t('contact.sentConfirm')}
                 </p>
               )}

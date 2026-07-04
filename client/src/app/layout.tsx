@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { LanguageProvider } from '../contexts/LanguageContext';
-import { DottedSurface } from '../components/ui/dotted-surface';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -32,7 +31,7 @@ export const metadata: Metadata = {
     'theme-color': '#003366',
   },
   icons: {
-    icon: '/favicon.svg',
+    icon: '/favicon.png',
     apple: '/mobisoins-logo.jpeg',
   },
 };
@@ -51,7 +50,6 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://placehold.co" />
       </head>
       <body style={{ background: '#ffffff' }}>
-        <DottedSurface />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>

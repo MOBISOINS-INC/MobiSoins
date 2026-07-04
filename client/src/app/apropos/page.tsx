@@ -6,9 +6,9 @@ import { About } from '../../components/sections/About';
 
 export default function AproposPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col" style={{ background: '#0a1f38' }}>
       <Header />
-      <main className="flex-grow pt-32">
+      <main className="flex-grow pt-16">
         <About />
       </main>
       <Footer />

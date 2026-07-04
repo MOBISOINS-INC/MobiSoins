@@ -3,6 +3,7 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
+import { BrandLogo } from '../ui/BrandLogo';
 /* ─── Inline SVG social icons ────────────────────────────────── */
 
 const SvgFacebook = ({ className }: { className?: string }) => (
@@ -11,11 +12,8 @@ const SvgFacebook = ({ className }: { className?: string }) => (
 const SvgInstagram = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
 );
-const SvgLinkedin = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-);
-const SvgYoutube = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
+const SvgTiktok = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 1.6 1.2 2.9 2.6 3.7.7.4 1.5.7 2.4.8v3.1a8.6 8.6 0 0 1-4.5-1.4v6.1a6.1 6.1 0 1 1-6.1-6.1c.3 0 .7 0 1 .1v3.2a2.9 2.9 0 1 0 2 2.8V3h2.6z"/></svg>
 );
 
 /* ─── Link data ───────────────────────────────────────────────── */
@@ -24,8 +22,7 @@ const footerSections = [
   {
     label: 'Produit',
     links: [
-      { title: 'Fonctionnalités', href: '#features' },
-      { title: 'Services', href: '#services' },
+      { title: 'Services', href: '/services' },
       { title: 'Tarification', href: '#pricing' },
       { title: 'Comment ça marche', href: '#how-it-works' },
     ],
@@ -34,9 +31,8 @@ const footerSections = [
     label: 'Entreprise',
     links: [
       { title: 'À propos', href: '/apropos' },
-      { title: 'FAQ', href: '#faq' },
-      { title: 'Carrières', href: '#' },
-      { title: 'Presse', href: '#' },
+      { title: 'Articles', href: '/articles' },
+      { title: 'FAQ', href: '/faq' },
     ],
   },
   {
@@ -51,10 +47,9 @@ const footerSections = [
   {
     label: 'Réseaux sociaux',
     links: [
-      { title: 'Facebook', href: '#', icon: SvgFacebook },
-      { title: 'Instagram', href: '#', icon: SvgInstagram },
-      { title: 'LinkedIn', href: '#', icon: SvgLinkedin },
-      { title: 'Youtube', href: '#', icon: SvgYoutube },
+      { title: 'Instagram', href: 'https://www.instagram.com/mobisoins/', icon: SvgInstagram },
+      { title: 'Facebook', href: 'https://www.facebook.com/p/MobiSoins-Inc-61562813077289/', icon: SvgFacebook },
+      { title: 'TikTok', href: 'https://www.tiktok.com/@mobisoins', icon: SvgTiktok },
     ],
   },
 ];
@@ -91,7 +86,7 @@ export const Footer = () => {
   return (
     <footer
       className="relative w-full"
-      style={{ background: 'rgba(255,255,255,0.92)' }}
+      style={{ background: '#04142a', borderTop: '1px solid rgba(255,255,255,0.07)' }}
     >
 
       <div className="container-custom py-16 lg:py-20">
@@ -100,16 +95,12 @@ export const Footer = () => {
           {/* Brand column */}
           <AnimatedContainer className="flex flex-col gap-5">
             <Link href="/">
-              <img
-                src="/mobisoins-logo.jpeg"
-                alt="MobiSoins"
-                className="h-14 w-auto object-contain mix-blend-multiply opacity-85"
-              />
+              <BrandLogo className="h-14 opacity-95" />
             </Link>
-            <p className="text-sm font-light leading-relaxed max-w-xs" style={{ color: '#5a5a6a' }}>
+            <p className="text-sm font-light leading-relaxed max-w-xs text-white/55">
               Une plateforme IA de soins infirmiers à domicile au Québec. Connecte des infirmières OIIQ certifiées avec des patients en quelques minutes.
             </p>
-            <p className="text-xs font-light" style={{ color: '#94a3b8' }}>
+            <p className="text-xs font-light text-white/40">
               © {new Date().getFullYear()} MobiSoins Inc. Tous droits réservés.
             </p>
           </AnimatedContainer>
@@ -120,8 +111,7 @@ export const Footer = () => {
               <AnimatedContainer key={section.label} delay={0.1 + i * 0.08}>
                 <div>
                   <h3
-                    className="text-xs font-semibold uppercase tracking-widest mb-4"
-                    style={{ color: '#1a1a24' }}
+                    className="text-xs font-semibold uppercase tracking-widest mb-4 text-white"
                   >
                     {section.label}
                   </h3>
@@ -130,10 +120,12 @@ export const Footer = () => {
                       <li key={link.title}>
                         <a
                           href={link.href}
+                          target={link.href.startsWith('http') ? '_blank' : undefined}
+                          rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                           className="inline-flex items-center gap-1.5 text-sm font-light transition-colors duration-200"
-                          style={{ color: '#5a5a6a' }}
-                          onMouseEnter={(e) => (e.currentTarget.style.color = '#1a1a24')}
-                          onMouseLeave={(e) => (e.currentTarget.style.color = '#5a5a6a')}
+                          style={{ color: 'rgba(255,255,255,0.55)' }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
                         >
                           {'icon' in link && link.icon && (
                             <link.icon className="w-3.5 h-3.5 shrink-0" />
@@ -153,9 +145,9 @@ export const Footer = () => {
         {/* Bottom bar */}
         <div
           className="mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
-          style={{ borderTop: '1px solid rgba(0,0,0,0.08)' }}
+          style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
         >
-          <p className="text-xs font-light" style={{ color: '#94a3b8' }}>
+          <p className="text-xs font-light" style={{ color: 'rgba(255,255,255,0.45)' }}>
             Fait avec soin au Québec 🍁
           </p>
           <div className="flex items-center gap-1">
@@ -165,11 +157,11 @@ export const Footer = () => {
               { label: 'Cookies', href: '/cookies' },
             ].map((item, i) => (
               <span key={item.label} className="flex items-center">
-                {i > 0 && <span className="mx-2 text-slate-200">·</span>}
+                {i > 0 && <span className="mx-2 text-white/20">·</span>}
                 <Link
                   href={item.href}
                   className="text-xs font-light transition-colors"
-                  style={{ color: '#94a3b8' }}
+                  style={{ color: 'rgba(255,255,255,0.45)' }}
                 >
                   {item.label}
                 </Link>

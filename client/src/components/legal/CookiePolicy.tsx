@@ -4,7 +4,7 @@ export const CookiePolicy = () => {
   return (
     <LegalLayout title="Politique des Cookies" lastUpdated="8 Avril 2026">
       <section className="mb-8">
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">1. Qu'est-ce qu'un Cookie ?</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">1. Qu'est-ce qu'un Cookie ?</h2>
         <p className="mb-4">
           Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, tablette ou mobile) lors de la visite d'un site web. 
           Il permet de conserver des données utilisateur afin de faciliter la navigation et permettre certaines fonctionnalités.
@@ -12,7 +12,7 @@ export const CookiePolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">2. Utilisation des Cookies</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">2. Utilisation des Cookies</h2>
         <p className="mb-4">
           Nous utilisons des cookies pour :
         </p>
@@ -25,7 +25,7 @@ export const CookiePolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">3. Types de Cookies</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">3. Types de Cookies</h2>
         <p className="mb-4">
           <strong>Cookies Essentiels :</strong> Nécessaires au fonctionnement technique du site.<br/>
           <strong>Cookies Analytiques :</strong> Nous aident à comprendre comment les visiteurs interagissent avec le site.<br/>
@@ -34,7 +34,7 @@ export const CookiePolicy = () => {
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">4. Gestion des Cookies</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">4. Gestion des Cookies</h2>
         <p className="mb-4">
           Vous pouvez à tout moment configurer votre navigateur pour accepter ou refuser les cookies. 
           Notez que la désactivation des cookies essentiels pourrait affecter votre utilisation de certaines parties du site.

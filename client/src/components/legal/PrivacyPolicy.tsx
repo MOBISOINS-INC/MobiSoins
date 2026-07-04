@@ -4,7 +4,7 @@ export const PrivacyPolicy = () => {
   return (
     <LegalLayout title="Politique de Confidentialité" lastUpdated="8 Avril 2026">
       <section className="mb-8">
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">1. Introduction</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">1. Introduction</h2>
         <p className="mb-4">
           Chez MobiSoins, nous accordons une importance primordiale à la protection de vos données personnelles. 
           Cette politique détaille comment nous collectons, utilisons et protégeons vos informations lorsque vous utilisez nos services.
@@ -12,7 +12,7 @@ export const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">2. Collecte des Données</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">2. Collecte des Données</h2>
         <p className="mb-4">
           Nous collectons les informations nécessaires pour fournir nos services de soins à domicile, notamment :
         </p>
@@ -25,7 +25,7 @@ export const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">3. Utilisation des Données</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">3. Utilisation des Données</h2>
         <p className="mb-4">
           Vos données sont utilisées exclusivement pour :
         </p>
@@ -38,7 +38,7 @@ export const PrivacyPolicy = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">4. Protection des Données</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">4. Protection des Données</h2>
         <p className="mb-4">
           Nous utilisons des mesures de sécurité avancées pour protéger vos informations, incluant le chiffrement des données, 
           des contrôles d'accès stricts et des audits de sécurité réguliers. Vos données de santé sont traitées avec la plus stricte confidentialité.
@@ -46,7 +46,7 @@ export const PrivacyPolicy = () => {
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold text-navy-900 mb-4">5. Vos Droits</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">5. Vos Droits</h2>
         <p className="mb-4">
           Vous avez le droit d'accéder à vos données personnelles, de les corriger ou de demander leur suppression. 
           Pour exercer ces droits, veuillez nous contacter à travers notre support client.

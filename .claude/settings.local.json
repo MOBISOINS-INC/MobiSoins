@@ -25,7 +25,12 @@
       "Bash(npm run *)",
       "Bash(sed -n '200,215p' client/src/components/layout/Header.tsx)",
       "Bash(sed -n '292,305p' client/src/components/layout/Header.tsx)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(sips -g pixelWidth -g pixelHeight nurse-01.jpeg)",
+      "Bash(which magick *)",
+      "Bash(python3 -c \"import PIL; print\\('PIL', PIL.__version__\\)\")",
+      "Bash(cd *)",
+      "Bash(python3)"
     ]
   }
 }

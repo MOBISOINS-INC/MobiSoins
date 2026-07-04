@@ -44,7 +44,7 @@ export const Blog = () => {
   const [featured, ...rest] = articles;
 
   return (
-    <section className="py-16" style={{ background: 'rgba(255,255,255,0.82)' }}>
+    <section className="relative py-16">
       <div className="container-custom">
 
         {/* Header */}
@@ -56,17 +56,17 @@ export const Blog = () => {
           className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10"
         >
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: '#4e6645' }}>
+            <p className="text-xs font-semibold uppercase tracking-widest mb-2 text-[#98B690]">
               {t('blog.badge') || 'Ressources'}
             </p>
             <h2
-              className="text-3xl md:text-4xl font-semibold tracking-tight"
-              style={{ color: '#1a1a24', letterSpacing: '-0.03em' }}
+              className="text-3xl md:text-4xl font-semibold tracking-tight text-white"
+              style={{ letterSpacing: '-0.03em' }}
             >
               {t('blog.title')}
             </h2>
           </div>
-          <p className="text-sm font-light max-w-xs text-right hidden md:block" style={{ color: '#94a3b8' }}>
+          <p className="text-sm font-light max-w-xs text-right hidden md:block text-white/45">
             {t('blog.subtitle')}
           </p>
         </motion.div>

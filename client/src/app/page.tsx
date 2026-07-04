@@ -18,40 +18,16 @@ const HowItWorks = dynamic(
   () => import('../components/sections/HowItWorks').then((m) => ({ default: m.HowItWorks })),
   { loading: () => <SectionLoader /> }
 );
-const Features = dynamic(
-  () => import('../components/sections/Features').then((m) => ({ default: m.Features })),
-  { loading: () => <SectionLoader /> }
-);
-const Services = dynamic(
-  () => import('../components/sections/Services').then((m) => ({ default: m.Services })),
+const PatientsSection = dynamic(
+  () => import('../components/sections/PatientsSection').then((m) => ({ default: m.PatientsSection })),
   { loading: () => <SectionLoader /> }
 );
 const Trust = dynamic(
   () => import('../components/sections/Trust').then((m) => ({ default: m.Trust })),
   { loading: () => <SectionLoader /> }
 );
-const FAQ = dynamic(
-  () => import('../components/sections/FAQ').then((m) => ({ default: m.FAQ })),
-  { loading: () => <SectionLoader /> }
-);
 const Newsletter = dynamic(
   () => import('../components/sections/Newsletter').then((m) => ({ default: m.Newsletter })),
-  { loading: () => <SectionLoader /> }
-);
-const Stats = dynamic(
-  () => import('../components/sections/Stats').then((m) => ({ default: m.Stats })),
-  { loading: () => <SectionLoader /> }
-);
-const Pillars = dynamic(
-  () => import('../components/sections/Pillars').then((m) => ({ default: m.Pillars })),
-  { loading: () => <SectionLoader /> }
-);
-const Blog = dynamic(
-  () => import('../components/sections/Blog').then((m) => ({ default: m.Blog })),
-  { loading: () => <SectionLoader /> }
-);
-const Contact = dynamic(
-  () => import('../components/sections/Contact').then((m) => ({ default: m.Contact })),
   { loading: () => <SectionLoader /> }
 );
 const NursingMapSection = dynamic(
@@ -61,21 +37,24 @@ const NursingMapSection = dynamic(
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'transparent', backdropFilter: 'none' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#0a1f38' }}>
       <Header />
       <main className="flex-grow">
         <Hero />
-        <LogoCloud />
-        <Stats />
-        <HowItWorks />
+
+        {/* Dark body — a short gradient blends the hero seam into one flat navy,
+            so the whole content area reads as a single clean shade */}
+        <div
+          className="relative"
+          style={{ background: 'linear-gradient(180deg, #031226 0%, #0a1f38 22%, #0a1f38 100%)' }}
+        >
+          <LogoCloud />
+          <HowItWorks />
+        </div>
+
         <NursingMapSection />
-        <Features />
-        <Services />
+        <PatientsSection />
         <Trust />
-        <Pillars />
-        <Blog />
-        <FAQ />
-        <Contact />
         <Newsletter />
       </main>
       <Footer />

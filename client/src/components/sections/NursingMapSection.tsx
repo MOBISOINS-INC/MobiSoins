@@ -1,26 +1,31 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { GpsMap } from '../ui/gps-map';
+import { Zap, ShieldCheck, Navigation, MapPin, Check } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 export function NursingMapSection() {
   const { t } = useLanguage();
 
-  const bullets = [
-    t('map.bullet1'),
-    t('map.bullet2'),
-    t('map.bullet3'),
+  const features = [
+    { icon: Zap, title: t('map.bullet1'), sub: t('map.bullet1Sub') },
+    { icon: ShieldCheck, title: t('map.bullet2'), sub: t('map.bullet2Sub') },
+    { icon: Navigation, title: t('map.bullet3'), sub: t('map.bullet3Sub') },
   ];
 
+  // Live dispatch lifecycle — the nurse is currently "en route" (index 2)
+  const flow = [
+    t('map.stepBooked'),
+    t('map.stepMatched'),
+    t('map.stepEnRoute'),
+    t('map.stepArrived'),
+  ];
+  const activeStep = 2;
+
   return (
-    <section
-      id="platform"
-      className="py-24"
-      style={{ background: 'rgba(255,255,255,0.82)' }}
-    >
+    <section id="platform" className="relative py-24 lg:py-28 overflow-hidden">
       <div className="container-custom">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
           {/* ── Left: text content ── */}
           <motion.div
@@ -29,83 +34,154 @@ export function NursingMapSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-sm font-semibold text-green-700 uppercase tracking-wider mb-3">
+            <p className="text-sm font-semibold uppercase tracking-wider mb-3 text-[#98B690]">
               {t('map.badge')}
             </p>
 
             <h2
-              className="text-4xl font-semibold tracking-tight mb-5"
-              style={{ color: '#1a1a24', letterSpacing: '-0.03em' }}
+              className="text-4xl lg:text-5xl font-semibold tracking-tight mb-5 text-white"
+              style={{ letterSpacing: '-0.03em' }}
             >
               {t('map.title')}
             </h2>
 
-            <p
-              className="text-base font-light leading-relaxed mb-8 max-w-md"
-              style={{ color: '#5a5a6a' }}
-            >
+            <p className="text-lg font-light leading-relaxed mb-10 max-w-md text-white/60">
               {t('map.description')}
             </p>
 
-            <ul className="flex flex-col gap-4">
-              {bullets.map((bullet) => (
-                <li key={bullet} className="flex items-start gap-3">
-                  {/* Green dot */}
-                  <span className="mt-1.5 w-2 h-2 rounded-full bg-green-600 flex-shrink-0" />
-                  <span className="text-base font-light" style={{ color: '#5a5a6a' }}>
-                    {bullet}
-                  </span>
-                </li>
+            {/* Feature rows with icon + subtext */}
+            <div className="flex flex-col gap-6">
+              {features.map(({ icon: Icon, title, sub }) => (
+                <div key={title} className="flex items-start gap-4">
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                    style={{
+                      background: 'rgba(78,102,69,0.2)',
+                      border: '1px solid rgba(152,182,144,0.35)',
+                    }}
+                  >
+                    <Icon className="w-5 h-5" style={{ color: '#98B690' }} />
+                  </div>
+                  <div>
+                    <p className="text-[15px] font-semibold text-white leading-snug">{title}</p>
+                    <p className="text-sm font-light text-white/50 leading-relaxed max-w-sm mt-0.5">{sub}</p>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
+
+            {/* Coverage footnote */}
+            <div className="mt-10 flex items-center gap-2 text-sm font-light text-white/45">
+              <MapPin className="w-4 h-4 shrink-0" style={{ color: '#98B690' }} />
+              {t('map.footnote')}
+            </div>
           </motion.div>
 
-          {/* ── Right: map card ── */}
+          {/* ── Right: the nurse's journey — en route → arriving ── */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
           >
-            {/* Edge-to-edge map card — no padding */}
-            <div className="rounded-2xl border border-black/12 shadow-lg bg-white overflow-hidden p-0 relative">
+            {/* soft green ambient glow */}
+            <div className="absolute -inset-6 rounded-[2.5rem] bg-[#98B690]/10 blur-3xl pointer-events-none" />
 
-              {/* Floating legend — top-left overlay */}
+            {/* Main photo — nurse en route */}
+            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+              <img
+                src="/nurses/nurse-05.jpeg"
+                alt="Infirmière MobiSoins en route vers un patient"
+                className="w-full h-80 md:h-[30rem] object-cover"
+              />
+              {/* gradient for legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/15 pointer-events-none" />
+
+              {/* Live "en route" status chip */}
               <div
-                className="absolute top-3 left-3 z-10 rounded-lg p-2 shadow text-xs flex flex-col gap-1.5"
+                className="absolute top-4 left-4 flex items-center gap-2.5 rounded-full px-4 py-2"
                 style={{
-                  background: 'rgba(255,255,255,0.92)',
-                  backdropFilter: 'blur(6px)',
-                  WebkitBackdropFilter: 'blur(6px)',
+                  background: 'rgba(3,18,38,0.55)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255,255,255,0.16)',
                 }}
               >
-                {/* Infirmière en route */}
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-5 h-0.5 rounded-full flex-shrink-0"
-                    style={{ background: '#4285f4', opacity: 0.8 }}
-                  />
-                  <span className="text-slate-600">Infirmière en route</span>
-                </div>
-                {/* Patient */}
-                <div className="flex items-center gap-2">
-                  <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true" className="flex-shrink-0">
-                    <circle cx="5" cy="4" r="4" fill="#4e6645" />
-                    <polygon points="5,12 2,7 8,7" fill="#4e6645" />
-                  </svg>
-                  <span className="text-slate-600">Patient</span>
-                </div>
-                {/* MobiSoins hub */}
-                <div className="flex items-center gap-2">
-                  <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true" className="flex-shrink-0">
-                    <circle cx="5" cy="4" r="4" fill="#003366" />
-                    <polygon points="5,12 2,7 8,7" fill="#003366" />
-                  </svg>
-                  <span className="text-slate-600">MobiSoins</span>
-                </div>
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-[#98B690] opacity-70 animate-ping" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#98B690]" />
+                </span>
+                <span className="text-sm font-medium text-white">{t('map.stepEnRoute')}</span>
+                <span className="text-sm font-semibold text-white/60">· 8 min</span>
               </div>
 
-              <GpsMap className="w-full h-72 md:h-96" />
+              {/* Live visit tracker card */}
+              <div className="glass-dark absolute inset-x-4 bottom-4 sm:inset-x-5 sm:bottom-5 px-5 py-4 !rounded-2xl">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
+                    {t('map.trackTitle')}
+                  </span>
+                  <span className="text-xs font-semibold text-[#98B690]">· 8 min</span>
+                </div>
+
+                {/* Horizontal stepper — dots + connectors row, labels row below */}
+                <div>
+                  <div className="flex items-center">
+                    {flow.map((label, i) => {
+                      const done = i < activeStep;
+                      const active = i === activeStep;
+                      return (
+                        <div key={label} className="flex items-center" style={i < flow.length - 1 ? { flex: 1 } : undefined}>
+                          <span
+                            className="flex items-center justify-center rounded-full shrink-0"
+                            style={{
+                              width: 20,
+                              height: 20,
+                              background: done || active ? '#98B690' : 'rgba(255,255,255,0.12)',
+                              boxShadow: active ? '0 0 0 4px rgba(152,182,144,0.25)' : 'none',
+                            }}
+                          >
+                            {done ? (
+                              <Check className="w-3 h-3" style={{ color: '#0a1f38' }} strokeWidth={3} />
+                            ) : active ? (
+                              <span className="w-2 h-2 rounded-full bg-[#0a1f38] animate-pulse" />
+                            ) : null}
+                          </span>
+                          {i < flow.length - 1 && (
+                            <div className="flex-1 h-0.5 mx-2 rounded-full overflow-hidden bg-white/12">
+                              <div
+                                className="h-full rounded-full"
+                                style={{ width: i < activeStep ? '100%' : '0%', background: '#98B690' }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="flex justify-between mt-2">
+                    {flow.map((label, i) => (
+                      <span
+                        key={label}
+                        className="text-[10px] font-medium whitespace-nowrap"
+                        style={{ color: i <= activeStep ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.4)' }}
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Overlapping secondary photo — the nurse arriving at the door */}
+            <div className="absolute -top-8 -right-6 w-40 md:w-52 rounded-2xl overflow-hidden border-4 border-[#0a1f38] shadow-xl hidden sm:block">
+              <img
+                src="/nurses/nurse-06.jpeg"
+                alt="Infirmière MobiSoins arrivant au domicile avec sa trousse"
+                className="w-full h-28 md:h-36 object-cover"
+              />
             </div>
           </motion.div>
 

@@ -78,26 +78,26 @@ export const Trust = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="trust" className="py-20" style={{ background: 'rgba(255,255,255,0.82)' }}>
+    <section id="trust" className="relative py-16">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-12"
+          className="mb-10"
         >
           <h2
-            className="text-4xl md:text-5xl font-semibold tracking-tight mb-3"
-            style={{ color: '#1a1a24', letterSpacing: '-0.03em' }}
+            className="text-4xl md:text-5xl font-semibold tracking-tight mb-3 text-white"
+            style={{ letterSpacing: '-0.03em' }}
           >
             {t('trust.title')}
           </h2>
-          <p className="text-lg max-w-xl font-light" style={{ color: '#5a5a6a' }}>
+          <p className="text-lg max-w-xl font-light text-white/60">
             {t('trust.subtitle')}
           </p>
         </motion.div>
 
-        <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[680px] overflow-hidden">
+        <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[480px] overflow-hidden">
           <TestimonialsColumn testimonials={firstColumn} duration={18} />
           <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={22} />
           <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={20} />

@@ -1,94 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
-
-/* ─── Booking flow notifications ──────────────────────────────── */
-
-const bookingFlow = [
-  {
-    icon: '📋',
-    bg: '#4e6645',
-    name: 'Réservation confirmée',
-    description: "Infirmière disponible ce soir à 18h30",
-    time: "À l'instant",
-  },
-  {
-    icon: '🚗',
-    bg: '#1a1a24',
-    name: 'Infirmière en route',
-    description: 'Sarah B. · 8 min de chez vous',
-    time: '2 min',
-  },
-  {
-    icon: '🏠',
-    bg: '#4e6645',
-    name: 'Infirmière arrivée',
-    description: 'Sarah B. est à votre porte',
-    time: '10 min',
-  },
-  {
-    icon: '✅',
-    bg: '#1a1a24',
-    name: 'Soin complété',
-    description: "Rapport clinique disponible dans l'app",
-    time: '45 min',
-  },
-];
-
-function AnimatedNotificationList() {
-  const [visibleCount, setVisibleCount] = useState(0);
-
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-    if (visibleCount === 0) {
-      timer = setTimeout(() => setVisibleCount(1), 600);
-    } else if (visibleCount < bookingFlow.length) {
-      timer = setTimeout(() => setVisibleCount((v) => v + 1), 1300);
-    } else {
-      timer = setTimeout(() => setVisibleCount(0), 2800);
-    }
-    return () => clearTimeout(timer);
-  }, [visibleCount]);
-
-  return (
-    <div className="flex flex-col gap-2.5 p-4 min-h-[240px]">
-      <AnimatePresence>
-        {bookingFlow.slice(0, visibleCount).map((item) => (
-          <motion.figure
-            key={item.name}
-            initial={{ opacity: 0, y: -14, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.45, ease: "easeOut" as const }}
-            className="flex items-center gap-3 bg-white rounded-2xl p-3.5 shadow-[0_2px_10px_rgba(0,0,0,0.06)] border border-black/[0.06]"
-          >
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0"
-              style={{ background: item.bg }}
-            >
-              {item.icon}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-semibold truncate" style={{ color: '#1a1a24' }}>
-                  {item.name}
-                </p>
-                <span className="text-[11px] shrink-0" style={{ color: '#94a3b8' }}>
-                  {item.time}
-                </span>
-              </div>
-              <p className="text-xs font-light truncate" style={{ color: '#5a5a6a' }}>
-                {item.description}
-              </p>
-            </div>
-          </motion.figure>
-        ))}
-      </AnimatePresence>
-    </div>
-  );
-}
 
 /* ─── Steps ────────────────────────────────────────────────────── */
 
@@ -132,118 +46,128 @@ export const HowItWorks = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="how-it-works" className="py-20" style={{ background: 'rgba(255,255,255,0.82)' }}>
+    <section id="how-it-works" className="relative py-20 lg:py-24 overflow-hidden">
       <div className="container-custom">
-        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-16 lg:gap-24 items-stretch">
 
-          {/* Left: title + horizontal roadmap */}
-          <div>
+          {/* Left: title + vertical process timeline */}
+          <div className="relative z-10 flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: "easeOut" as const }}
-              className="mb-12"
+              className="mb-14"
             >
               <h2
-                className="text-4xl md:text-5xl font-semibold tracking-tight mb-4"
-                style={{ color: '#1a1a24', letterSpacing: '-0.03em' }}
+                className="text-5xl md:text-6xl font-semibold tracking-tight mb-5 text-white"
+                style={{ letterSpacing: '-0.035em' }}
               >
                 {t('howItWorks.title')}
               </h2>
-              <p className="text-base font-light max-w-sm" style={{ color: '#5a5a6a' }}>
+              <p className="text-lg font-light max-w-md text-white/60 leading-relaxed">
                 {t('howItWorks.subtitle')}
               </p>
             </motion.div>
 
-            {/* Horizontal steps */}
+            {/* Vertical timeline */}
             <div className="relative">
-              {/* Connector line behind icons */}
+              {/* Connector line running through the nodes */}
               <div
-                className="absolute top-8 left-8 right-0 h-px hidden sm:block"
-                style={{ background: 'linear-gradient(to right, rgba(0,0,0,0.08) 60%, transparent)' }}
+                className="absolute top-7 bottom-7 left-7 w-px"
+                style={{ background: 'linear-gradient(to bottom, rgba(152,182,144,0.55), rgba(152,182,144,0.15) 55%, rgba(255,255,255,0.04))' }}
               />
 
-              <div className="grid grid-cols-3 gap-6">
+              <div className="flex flex-col gap-10">
                 {steps.map((step, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 24 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: 24 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.12, duration: 0.6, ease: "easeOut" as const }}
-                    className="flex flex-col"
+                    transition={{ delay: i * 0.14, duration: 0.6, ease: "easeOut" as const }}
+                    className="relative flex items-start gap-6"
                   >
-                    {/* Icon */}
+                    {/* Icon node */}
                     <div
-                      className="relative z-10 w-16 h-16 rounded-2xl bg-white border flex items-center justify-center mb-5 shadow-sm"
-                      style={{ borderColor: 'rgba(0,0,0,0.1)', color: '#4e6645' }}
+                      className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+                      style={{
+                        background: 'rgba(78,102,69,0.2)',
+                        border: '1px solid rgba(152,182,144,0.4)',
+                        color: '#98B690',
+                        boxShadow: '0 0 0 8px #0a1f38',
+                      }}
                     >
                       {step.icon}
                     </div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: '#94a3b8' }}>
-                      {step.num}
-                    </p>
-                    <h3 className="text-sm font-semibold mb-1.5 leading-snug" style={{ color: '#1a1a24' }}>
-                      {t(step.titleKey)}
-                    </h3>
-                    <p className="text-xs font-light leading-relaxed" style={{ color: '#5a5a6a' }}>
-                      {t(step.descKey)}
-                    </p>
+                    <div className="pt-1">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] mb-2" style={{ color: 'rgba(152,182,144,0.85)' }}>
+                        {step.num}
+                      </p>
+                      <h3 className="text-xl font-semibold mb-1.5 leading-snug text-white">
+                        {t(step.titleKey)}
+                      </h3>
+                      <p className="text-[15px] font-light leading-relaxed text-white/55 max-w-sm">
+                        {t(step.descKey)}
+                      </p>
+                    </div>
                   </motion.div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Right: phone mockup with animated list */}
+          {/* Right: large cinematic nurse photo */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: "easeOut" as const }}
-            className="flex justify-center lg:justify-end"
+            transition={{ duration: 0.8, ease: "easeOut" as const }}
+            className="relative"
           >
-            <div className="w-full max-w-sm">
+            {/* Subtle green ambient glow behind the photo — kept low so the
+                background stays a single clean shade */}
+            <div
+              className="absolute -inset-6 -z-10 pointer-events-none"
+              style={{ background: 'radial-gradient(50% 50% at 55% 42%, rgba(78,102,69,0.22), transparent 70%)' }}
+            />
+            <div
+              className="relative w-full min-h-[460px] lg:h-full lg:min-h-[560px] rounded-[2.5rem] overflow-hidden shadow-[0_50px_120px_rgba(0,0,0,0.6)]"
+              style={{ border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              <Image
+                src="/nurses/nurse-08.jpeg"
+                alt="Infirmière MobiSoins prodiguant des soins à une patiente à domicile"
+                fill
+                unoptimized
+                sizes="(max-width: 1024px) 100vw, 55vw"
+                className="object-cover"
+                style={{ objectPosition: '50% 22%' }}
+              />
+              {/* Cinematic gradient anchoring the caption */}
               <div
-                className="rounded-[2rem] overflow-hidden border shadow-[0_20px_60px_rgba(0,0,0,0.1)]"
-                style={{ borderColor: 'rgba(0,0,0,0.09)' }}
+                className="absolute inset-0 pointer-events-none"
+                style={{ background: 'linear-gradient(180deg, rgba(3,18,38,0) 45%, rgba(3,18,38,0.5) 78%, rgba(3,18,38,0.85) 100%)' }}
+              />
+
+              {/* Credential caption inside the frame */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.45, duration: 0.5, ease: "easeOut" as const }}
+                className="glass-dark absolute inset-x-5 bottom-5 sm:inset-x-7 sm:bottom-7 flex items-center gap-3.5 px-5 py-4 !rounded-2xl"
               >
-                {/* App header */}
-                <div
-                  className="px-5 py-4 flex items-center justify-between"
-                  style={{ background: '#1a1a24' }}
-                >
-                  <div>
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse block" />
-                      <span className="text-white text-xs font-semibold">MobiSoins</span>
-                    </div>
-                    <p className="text-[11px]" style={{ color: '#94a3b8' }}>
-                      Notifications en direct
-                    </p>
-                  </div>
-                  <span className="text-2xl">🏥</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse block shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold leading-tight text-white">
+                    Infirmière OIIQ
+                  </p>
+                  <p className="text-xs font-light text-white/60">
+                    Soins professionnels à domicile
+                  </p>
                 </div>
-
-                {/* Notification feed */}
-                <div style={{ background: '#f8fafc' }}>
-                  <AnimatedNotificationList />
-                </div>
-
-                {/* Bottom bar */}
-                <div
-                  className="px-5 py-3 flex items-center justify-between border-t"
-                  style={{ background: '#fff', borderColor: 'rgba(0,0,0,0.07)' }}
-                >
-                  <span className="text-xs font-medium" style={{ color: '#5a5a6a' }}>
-                    Mise à jour en temps réel
-                  </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{ background: '#4e664520', color: '#4e6645' }}>
-                    EN DIRECT
-                  </span>
-                </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
 

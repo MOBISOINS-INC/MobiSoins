@@ -1,54 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Activity, Filter, Layout, MapPin } from 'lucide-react';
-import { Area, AreaChart, CartesianGrid } from 'recharts';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Activity, Check, Filter, Layout, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { FlatNAMap } from '@/components/ui/globe';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
-
-/* ─── Mini area chart for card 3 ────────────────────────────── */
-
-const healthData = [
-  { day: '1', tension: 130, freq: 72 },
-  { day: '4', tension: 125, freq: 68 },
-  { day: '7', tension: 128, freq: 75 },
-  { day: '10', tension: 122, freq: 70 },
-  { day: '13', tension: 118, freq: 65 },
-  { day: '16', tension: 115, freq: 67 },
-  { day: '19', tension: 120, freq: 71 },
-  { day: '22', tension: 112, freq: 63 },
-  { day: '25', tension: 108, freq: 60 },
-  { day: '28', tension: 105, freq: 62 },
-];
-
-const healthConfig = {
-  tension: { label: 'Tension', color: '#4e6645' },
-  freq: { label: 'Fréq. card.', color: '#98B690' },
-} satisfies ChartConfig;
-
-function HealthChart() {
-  return (
-    <ChartContainer config={healthConfig} className="h-full w-full">
-      <AreaChart data={healthData} margin={{ top: 6, right: 0, left: 0, bottom: 0 }}>
-        <defs>
-          <linearGradient id="fillTension" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#4e6645" stopOpacity={0.3} />
-            <stop offset="95%" stopColor="#4e6645" stopOpacity={0.02} />
-          </linearGradient>
-          <linearGradient id="fillFreq" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#98B690" stopOpacity={0.35} />
-            <stop offset="95%" stopColor="#98B690" stopOpacity={0.02} />
-          </linearGradient>
-        </defs>
-        <CartesianGrid vertical={false} stroke="#f0f0f0" />
-        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
-        <Area dataKey="freq" type="natural" fill="url(#fillFreq)" stroke="#98B690" strokeWidth={1.5} stackId="a" />
-        <Area dataKey="tension" type="natural" fill="url(#fillTension)" stroke="#4e6645" strokeWidth={2} stackId="a" />
-      </AreaChart>
-    </ChartContainer>
-  );
-}
 
 /* ─── Word-by-word pop-up helper ─────────────────────────────── */
 
@@ -56,11 +12,13 @@ function AnimatedWords({
   text,
   className,
   highlightWords = [],
+  highlightColor = '#4e6645',
   delay = 0,
 }: {
   text: string;
   className?: string;
   highlightWords?: string[];
+  highlightColor?: string;
   delay?: number;
 }) {
   const words = text.split(' ');
@@ -75,7 +33,8 @@ function AnimatedWords({
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: delay + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-            className={`inline-block mr-[0.25em] ${isHighlight ? 'text-[#4e6645] font-semibold' : ''}`}
+            className="inline-block mr-[0.25em]"
+            style={isHighlight ? { color: highlightColor, fontWeight: 600 } : undefined}
           >
             {word}
           </motion.span>
@@ -98,87 +57,50 @@ const cardVariants = {
 
 /* ─── Main section ───────────────────────────────────────────── */
 
-export const Services = () => {
+export const Services = ({ showViewAll = true }: { showViewAll?: boolean } = {}) => {
   const { t } = useLanguage();
 
   const cards = [
     {
-      icon: <Layout className="w-4 h-4" style={{ color: '#4e6645' }} />,
+      icon: <Layout className="w-4 h-4" style={{ color: '#98B690' }} />,
       badge: t('services.card1Badge'),
       title: t('services.card1Title'),
       description: t('services.card1Description'),
-      visual: (
-        <div className="w-full space-y-2.5 mt-4">
-          {[
-            { emoji: '📅', label: t('services.card1Item1'), sub: t('services.card1Item1Detail'), dot: '#4e6645' },
-            { emoji: '💊', label: t('services.card1Item2'), sub: t('services.card1Item2Detail'), dot: '#98B690' },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 bg-slate-50 rounded-full flex items-center justify-center text-xs border border-slate-100">
-                  {item.emoji}
-                </div>
-                <div>
-                  <div className="text-[10px] font-semibold text-slate-700">{item.label}</div>
-                  <div className="text-[9px] text-slate-400">{item.sub}</div>
-                </div>
-              </div>
-              <div className="w-2 h-2 rounded-full" style={{ background: item.dot }} />
-            </div>
-          ))}
-        </div>
-      ),
+      image: '/nurses/nurse-kid.jpeg',
+      imageAlt: t('services.card1Title'),
+      objectPosition: '50% 32%',
+      points: [t('services.card1Point1'), t('services.card1Point2'), t('services.card1Point3')],
     },
     {
-      icon: <Filter className="w-4 h-4" style={{ color: '#4e6645' }} />,
+      icon: <Filter className="w-4 h-4" style={{ color: '#98B690' }} />,
       badge: t('services.card2Badge'),
       title: t('services.card2Title'),
       description: t('services.card2Description'),
-      visual: (
-        <div className="w-full max-w-[200px] mx-auto space-y-3 mt-4">
-          <div className="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
-            <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-[10px] shadow-sm border border-slate-100">
-              <MapPin className="w-3 h-3" style={{ color: '#4e6645' }} />
-            </div>
-            <div className="h-1.5 bg-slate-200 rounded-full flex-1" />
-          </div>
-          <div className="flex justify-center">
-            <div className="h-5 w-px bg-slate-200" />
-          </div>
-          <div className="flex items-center gap-2 bg-white p-2 rounded-xl border border-green-200 shadow-sm">
-            <div className="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center text-xs border border-green-100">
-              👩‍⚕️
-            </div>
-            <div className="flex-1">
-              <div className="h-1.5 bg-slate-300 rounded-full w-24 mb-1" />
-              <div className="h-1 bg-slate-200 rounded-full w-16" />
-            </div>
-            <div className="text-[10px] font-bold" style={{ color: '#4e6645' }}>✓</div>
-          </div>
-        </div>
-      ),
+      image: '/nurses/nurse-07.jpeg',
+      imageAlt: t('services.card2Title'),
+      objectPosition: '50% 20%',
+      points: [t('services.card2Point1'), t('services.card2Point2'), t('services.card2Point3')],
     },
     {
-      icon: <Activity className="w-4 h-4" style={{ color: '#4e6645' }} />,
+      icon: <Activity className="w-4 h-4" style={{ color: '#98B690' }} />,
       badge: t('services.card3Badge'),
       title: t('services.card3Title'),
       description: t('services.card3Description'),
-      visual: (
-        <div className="w-full h-32 mt-2">
-          <HealthChart />
-        </div>
-      ),
+      image: '/nurses/elder-04.jpeg',
+      imageAlt: t('services.card3Title'),
+      objectPosition: '50% 28%',
+      points: [t('services.card3Point1'), t('services.card3Point2'), t('services.card3Point3')],
     },
   ];
 
   return (
-    <section id="services" className="py-24 overflow-hidden" style={{ background: 'rgba(255,255,255,0.82)' }}>
+    <section id="services" className="relative py-24 overflow-hidden">
       <div className="container-custom">
 
         {/* ── Heading with word pop-up ── */}
         <div className="mb-16 max-w-2xl">
           <h2
-            className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4 leading-tight"
+            className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4 leading-tight text-white"
             style={{ letterSpacing: '-0.03em' }}
           >
             <AnimatedWords
@@ -194,6 +116,7 @@ export const Services = () => {
               text={t('services.mainTitleHighlight')}
               delay={0.15}
               highlightWords={[t('services.mainTitleHighlight')]}
+              highlightColor="#98B690"
             />{' '}
             <AnimatedWords
               text={t('services.mainTitleSuffix')}
@@ -205,8 +128,7 @@ export const Services = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-base font-light"
-            style={{ color: '#5a5a6a' }}
+            className="text-base font-light text-white/60"
           >
             {t('services.badge')}
           </motion.p>
@@ -222,107 +144,82 @@ export const Services = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="bg-white rounded-2xl p-7 flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300"
-              style={{ border: '1px solid rgba(26,26,36,0.1)' }}
+              className="glass-dark !rounded-2xl p-7 flex flex-col"
             >
-              {/* Visual */}
-              <div className="bg-slate-50/80 border border-slate-100 rounded-xl p-5 mb-6 h-52 flex flex-col justify-center relative overflow-hidden">
-                <div className="absolute top-3.5 left-4 text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
-                  {card.badge}
+              {/* Real photo */}
+              <div className="relative mb-6 h-52 rounded-xl overflow-hidden border border-white/10 bg-white/5">
+                <Image
+                  src={card.image}
+                  alt={card.imageAlt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover"
+                  style={{ objectPosition: card.objectPosition }}
+                />
+                {/* Legibility gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+                {/* Floating badge pill */}
+                <div className="absolute top-3 left-3">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/90 border border-white/15 shadow-sm">
+                    {card.icon}
+                    {card.badge}
+                  </span>
                 </div>
-                {card.visual}
               </div>
 
               {/* Text */}
               <div>
-                <div className="flex items-center gap-2 mb-2.5 text-sm font-medium" style={{ color: '#4e6645' }}>
+                <div className="flex items-center gap-2 mb-2.5 text-sm font-medium" style={{ color: '#98B690' }}>
                   {card.icon}
                   <span>{card.badge}</span>
                 </div>
-                <h3 className="text-lg font-semibold tracking-tight mb-2" style={{ color: '#1a1a24' }}>
+                <h3 className="text-lg font-semibold tracking-tight mb-2 text-white">
                   {card.title}
                 </h3>
-                <p className="text-sm font-light leading-relaxed" style={{ color: '#5a5a6a' }}>
+                <p className="text-sm font-light leading-relaxed text-white/65">
                   {card.description}
                 </p>
+
+                {/* Feature bullets */}
+                <ul className="mt-5 pt-5 space-y-2.5 border-t border-white/10">
+                  {card.points.map((point, j) => (
+                    <li key={j} className="flex items-start gap-2.5">
+                      <span
+                        className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
+                        style={{ background: 'rgba(152,182,144,0.15)' }}
+                      >
+                        <Check className="w-3 h-3" style={{ color: '#98B690' }} strokeWidth={2.5} />
+                      </span>
+                      <span className="text-[13px] font-light leading-snug text-white/70">
+                        {point}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* ── Globe CTA banner ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-3xl border bg-white shadow-sm px-8 py-14 md:px-16 md:py-20"
-          style={{ borderColor: 'rgba(26,26,36,0.12)' }}
-        >
-
-          <div className="relative flex flex-col-reverse items-center justify-between gap-10 md:flex-row">
-            {/* Left text */}
-            <div className="z-10 max-w-lg">
-              <motion.p
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex items-center gap-2 text-sm font-medium mb-6"
-                style={{ color: '#4e6645' }}
-              >
-                <MapPin className="w-4 h-4" />
-                {t('services.mapBadge')}
-              </motion.p>
-
-              <h2
-                className="text-3xl md:text-4xl font-semibold tracking-tight mb-3"
-                style={{ letterSpacing: '-0.03em' }}
-              >
-                <AnimatedWords
-                  text={t('services.bannerTitle')}
-                  delay={0.1}
-                />{' '}
-                <AnimatedWords
-                  text={t('services.bannerTitleHighlight')}
-                  delay={0.4}
-                />
-              </h2>
-
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="text-base font-light mb-8 max-w-sm"
-                style={{ color: '#5a5a6a' }}
-              >
-                {t('services.bannerDescription')}
-              </motion.p>
-
-              <motion.a
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.75 }}
-                whileHover={{ y: -3 }}
-                whileTap={{ y: 2 }}
-                href="https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-waitlist inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
-              >
-                {t('services.bannerCta')}
-                <ArrowRight className="w-4 h-4" />
-              </motion.a>
-            </div>
-
-            {/* Flat NA map */}
-            <div className="relative h-[220px] w-full max-w-[400px] shrink-0 opacity-90">
-              <FlatNAMap className="w-full h-full" />
-            </div>
-          </div>
-        </motion.div>
+        {/* View all services → dedicated page (hidden when already on that page) */}
+        {showViewAll && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="mt-12 flex justify-center"
+          >
+            <Link
+              href="/services"
+              className="group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
+              style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.16)' }}
+            >
+              {t('services.seeAll')}
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Link>
+          </motion.div>
+        )}
 
       </div>
     </section>

@@ -65,8 +65,8 @@ const allPartners = [...partners, ...partners];
 
 export const LogoCloud = () => {
   return (
-    <section className="w-full max-w-[1400px] mx-auto border-t border-slate-200/30 pt-20 pb-20 overflow-hidden">
-      <p className="text-sm text-slate-400 font-semibold tracking-widest uppercase mb-12 text-center px-6">
+    <section className="relative w-full max-w-[1400px] mx-auto pt-20 pb-16 overflow-hidden">
+      <p className="text-xs font-semibold tracking-[0.25em] uppercase mb-12 text-center px-6 text-white/45">
         Partenaires de confiance au Québec
       </p>
       <div
@@ -80,7 +80,7 @@ export const LogoCloud = () => {
           {allPartners.map((p, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 text-slate-400 opacity-60 hover:opacity-100 hover:text-slate-800 transition-all duration-300 cursor-pointer mx-12"
+              className="flex items-center gap-3 text-white/40 hover:text-white transition-colors duration-300 cursor-pointer mx-12"
             >
               {p.icon}
               <span className="text-xl font-semibold tracking-tight whitespace-nowrap">{p.name}</span>

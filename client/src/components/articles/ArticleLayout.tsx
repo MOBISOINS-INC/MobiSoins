@@ -47,7 +47,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
   const data = article[language];
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#ffffff' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#0a1f38' }}>
       <Header />
       <main className="flex-grow pt-20">
         {/* Hero image */}
@@ -98,7 +98,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
           {/* Subtitle / lede */}
           <p
             className="text-lg md:text-xl font-medium leading-relaxed mb-10"
-            style={{ color: '#1a1a24', letterSpacing: '-0.01em' }}
+            style={{ color: '#ffffff', letterSpacing: '-0.01em' }}
           >
             {data.subtitle}
           </p>
@@ -108,7 +108,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
             <section key={i} className="mb-10">
               <h2
                 className="text-xl md:text-2xl font-semibold mb-4 tracking-tight"
-                style={{ color: '#1a1a24', letterSpacing: '-0.02em' }}
+                style={{ color: '#ffffff', letterSpacing: '-0.02em' }}
               >
                 {section.title}
               </h2>
@@ -116,7 +116,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
                 <p
                   key={j}
                   className="text-base leading-relaxed mb-4"
-                  style={{ color: '#5a5a6a' }}
+                  style={{ color: 'rgba(255,255,255,0.65)' }}
                 >
                   {paragraph}
                 </p>
@@ -124,7 +124,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
               {section.list && (
                 <ul className="list-disc pl-6 mb-4 space-y-2">
                   {section.list.map((item, k) => (
-                    <li key={k} className="text-base leading-relaxed" style={{ color: '#5a5a6a' }}>
+                    <li key={k} className="text-base leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
                       {item}
                     </li>
                   ))}
@@ -138,7 +138,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
             <section className="mb-10">
               <h2
                 className="text-lg font-semibold mb-4 tracking-tight"
-                style={{ color: '#1a1a24', letterSpacing: '-0.02em' }}
+                style={{ color: '#ffffff', letterSpacing: '-0.02em' }}
               >
                 {language === 'FR' ? 'Sources' : 'Sources'}
               </h2>
@@ -150,9 +150,9 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm underline underline-offset-2 break-all transition-colors duration-200"
-                      style={{ color: '#4e6645' }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#1a1a24'; }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#4e6645'; }}
+                      style={{ color: '#98B690' }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#98B690'; }}
                     >
                       {source.label}
                     </a>
@@ -163,10 +163,10 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
           )}
 
           {/* Conclusion */}
-          <section className="mb-10 p-6 md:p-8 rounded-2xl" style={{ background: '#f7f9fa', border: '1px solid rgba(0,0,0,0.06)' }}>
+          <section className="mb-10 p-6 md:p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <h2
               className="text-xl md:text-2xl font-semibold mb-4 tracking-tight"
-              style={{ color: '#1a1a24', letterSpacing: '-0.02em' }}
+              style={{ color: '#ffffff', letterSpacing: '-0.02em' }}
             >
               {data.conclusion.title}
             </h2>
@@ -174,7 +174,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
               <p
                 key={j}
                 className="text-base leading-relaxed mb-3 last:mb-0"
-                style={{ color: '#5a5a6a' }}
+                style={{ color: 'rgba(255,255,255,0.65)' }}
               >
                 {paragraph}
               </p>
@@ -182,11 +182,11 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
           </section>
 
           {/* Footer / copyright */}
-          <div className="border-t pt-8 mt-12" style={{ borderColor: 'rgba(0,0,0,0.08)' }}>
-            <p className="text-xs mb-2" style={{ color: '#94a3b8' }}>
+          <div className="border-t pt-8 mt-12" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+            <p className="text-xs mb-2" style={{ color: 'rgba(255,255,255,0.45)' }}>
               &copy; 2026 MobiSoins &mdash; {language === 'FR' ? 'Tous droits r\u00e9serv\u00e9s.' : 'All rights reserved.'}
             </p>
-            <p className="text-xs" style={{ color: '#94a3b8' }}>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
               {language === 'FR'
                 ? 'Ce contenu est prot\u00e9g\u00e9. Toute reproduction, distribution ou utilisation sans autorisation est interdite.'
                 : 'This content is protected. Any reproduction, distribution, or use without permission is prohibited.'}
@@ -197,7 +197,7 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({ article }) => {
           <Link
             href="/"
             className="inline-flex items-center gap-2 mt-8 text-sm font-medium transition-colors duration-200"
-            style={{ color: '#4e6645' }}
+            style={{ color: '#98B690' }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />

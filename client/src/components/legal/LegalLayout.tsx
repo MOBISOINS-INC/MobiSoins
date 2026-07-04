@@ -13,7 +13,7 @@ interface LegalLayoutProps {
 
 export const LegalLayout: React.FC<LegalLayoutProps> = ({ title, lastUpdated, children }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col" style={{ background: '#0a1f38' }}>
       <Header />
       <main className="flex-grow pt-32 pb-20">
         <div className="container mx-auto px-6 max-w-4xl">
@@ -22,10 +22,10 @@ export const LegalLayout: React.FC<LegalLayoutProps> = ({ title, lastUpdated, ch
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-navy-900 mb-4">{title}</h1>
-            <p className="text-gray-500 mb-12">Dernière mise à jour : {lastUpdated}</p>
-            
-            <div className="prose prose-lg prose-blue max-w-none text-gray-600">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{title}</h1>
+            <p className="text-white/45 mb-12">Dernière mise à jour : {lastUpdated}</p>
+
+            <div className="prose prose-lg prose-invert max-w-none text-white/70 marker:text-white/40">
               {children}
             </div>
           </motion.div>

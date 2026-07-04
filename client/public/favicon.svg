@@ -1,13 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- Background circle -->
-  <circle cx="50" cy="50" r="48" fill="#003366"/>
-  
-  <!-- Medical cross in white -->
-  <rect x="44" y="25" width="12" height="50" fill="white" rx="2"/>
-  <rect x="25" y="44" width="50" height="12" fill="white" rx="2"/>
-  
-  <!-- Small accent circle (representing care/home) -->
-  <circle cx="70" cy="30" r="8" fill="#0066CC"/>
-  <circle cx="70" cy="30" r="5" fill="white"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- "M" from the MobiSoins logo, white, rounded strokes -->
+  <path d="M17 42 V22 L32 36 L47 22 V42"
+        fill="none" stroke="#ffffff" stroke-width="7"
+        stroke-linecap="round" stroke-linejoin="round"/>
 
+  <!-- Green pulse / heartbeat line under the M -->
+  <path d="M13 50 H24 l2.5 -7 l4 13 l3 -6 H51"
+        fill="none" stroke="#88c65b" stroke-width="4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

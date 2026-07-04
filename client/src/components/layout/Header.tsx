@@ -4,10 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { BrandLogo } from '../ui/BrandLogo';
 
 export const Header = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [articlesOpen, setArticlesOpen] = useState(false);
   const lastScrollY = useRef(0);
   const articlesRef = useRef<HTMLDivElement>(null);
@@ -40,6 +42,9 @@ export const Header = () => {
   useEffect(() => {
     const onScroll = () => {
       const current = window.scrollY;
+      // Stay transparent for the whole hero; only become the frosted bar once
+      // we've scrolled past it (prevents the bar flashing during hero scroll).
+      setScrolled(current > window.innerHeight - 120);
       if (current > lastScrollY.current && current > 80) {
         setHidden(true);
         setIsMobileOpen(false);
@@ -65,11 +70,11 @@ export const Header = () => {
   }, []);
 
   const navLinks = [
+    { name: t('header.home'), href: '/' },
     { name: t('header.about'), href: '/apropos' },
-    { name: t('header.howItWorks'), href: '#how-it-works' },
-    { name: t('header.features'), href: '#features' },
-    { name: t('header.services'), href: '#services' },
-    { name: t('header.faq'), href: '#faq' },
+    { name: t('header.services'), href: '/services' },
+    { name: t('header.faq'), href: '/faq' },
+    { name: t('header.contact'), href: '/contact' },
     {
       name: t('header.recruitment'),
       href: 'https://docs.google.com/forms/d/e/1FAIpQLSfFqlaoCKqzrrPMvfQ8E50Jims2JdRN3fpEuq-5q35Ngd-Qsw/viewform',
@@ -77,27 +82,34 @@ export const Header = () => {
     },
   ];
 
+  // Over the hero (top of page) the header is transparent with light text;
+  // once scrolled into content it becomes a frosted dark navy bar (matching the
+  // dark page theme) with light text.
+  const overHero = !scrolled;
+  const navColor = overHero ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.72)';
+  const navHoverColor = '#ffffff';
+  const navHoverBg = overHero ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.1)';
+
   return (
     <motion.header
       animate={{ y: hidden ? '-100%' : '0%' }}
       transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
       className="fixed top-0 left-0 w-full z-50"
       style={{
-        background: 'linear-gradient(to bottom, rgba(255,255,255,0.96) 60%, rgba(255,255,255,0))',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        background: overHero
+          ? 'linear-gradient(to bottom, rgba(3,18,38,0.55) 0%, rgba(3,18,38,0.28) 55%, rgba(3,18,38,0) 100%)'
+          : 'linear-gradient(to bottom, rgba(6,20,40,0.92) 64%, rgba(6,20,40,0.7) 82%, rgba(6,20,40,0))',
+        backdropFilter: overHero ? 'none' : 'blur(16px)',
+        WebkitBackdropFilter: overHero ? 'none' : 'blur(16px)',
+        transition: 'background 0.3s ease',
       }}
     >
       <div className="container-custom">
-        <div className="flex h-20 items-center justify-between gap-6">
+        <div className="flex h-24 items-center justify-between gap-6">
 
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
-            <img
-              src="/mobisoins-logo.jpeg"
-              alt="MobiSoins"
-              className="h-32 w-auto object-contain mix-blend-multiply opacity-90 hover:opacity-100 transition-opacity duration-200"
-            />
+            <BrandLogo className="h-16 hover:opacity-90 transition-opacity duration-200" glow={overHero} />
           </Link>
 
           {/* Desktop nav */}
@@ -109,13 +121,13 @@ export const Header = () => {
                 target={link.external ? '_blank' : undefined}
                 rel={link.external ? 'noopener noreferrer' : undefined}
                 className="px-3.5 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap"
-                style={{ color: '#5a5a6a' }}
+                style={{ color: navColor }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = '#1a1a24';
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.04)';
+                  (e.currentTarget as HTMLElement).style.color = navHoverColor;
+                  (e.currentTarget as HTMLElement).style.background = navHoverBg;
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = '#5a5a6a';
+                  (e.currentTarget as HTMLElement).style.color = navColor;
                   (e.currentTarget as HTMLElement).style.background = 'transparent';
                 }}
               >
@@ -128,7 +140,7 @@ export const Header = () => {
               <button
                 onClick={() => setArticlesOpen((v) => !v)}
                 className="flex items-center gap-1 px-3.5 py-2 text-[13px] font-medium rounded-lg transition-colors whitespace-nowrap"
-                style={{ color: articlesOpen ? '#1a1a24' : '#5a5a6a', background: articlesOpen ? 'rgba(0,0,0,0.04)' : 'transparent' }}
+                style={{ color: articlesOpen ? navHoverColor : navColor, background: articlesOpen ? navHoverBg : 'transparent' }}
               >
                 Articles
                 <svg
@@ -148,11 +160,11 @@ export const Header = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.98 }}
                     transition={{ duration: 0.18, ease: 'easeOut' }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[380px] rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.12)] border"
-                    style={{ background: '#fff', borderColor: 'rgba(0,0,0,0.08)' }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[380px] rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)] border backdrop-blur-xl"
+                    style={{ background: 'rgba(10,25,48,0.97)', borderColor: 'rgba(255,255,255,0.1)' }}
                   >
                     <div className="p-2">
-                      <p className="text-[10px] font-semibold uppercase tracking-widest px-3 py-2" style={{ color: '#94a3b8' }}>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest px-3 py-2" style={{ color: 'rgba(255,255,255,0.45)' }}>
                         {t('blog.title')}
                       </p>
                       {articles.map((a, i) => (
@@ -160,16 +172,16 @@ export const Header = () => {
                           key={i}
                           href={a.href}
                           onClick={() => setArticlesOpen(false)}
-                          className="group flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-slate-50"
+                          className="group flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-white/5"
                         >
-                          <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border" style={{ borderColor: 'rgba(0,0,0,0.06)' }}>
+                          <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
                             <img src={a.img} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: '#4e6645' }}>{a.tag}</span>
-                            <p className="text-xs font-medium leading-snug line-clamp-2 mt-0.5" style={{ color: '#1a1a24' }}>{a.title}</p>
+                            <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: '#98B690' }}>{a.tag}</span>
+                            <p className="text-xs font-medium leading-snug line-clamp-2 mt-0.5" style={{ color: '#ffffff' }}>{a.title}</p>
                           </div>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="shrink-0 opacity-0 group-hover:opacity-40 transition-opacity" style={{ color: '#1a1a24' }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: '#ffffff' }}>
                             <path d="M7 17L17 7M17 7H7M17 7v10" />
                           </svg>
                         </Link>
@@ -186,7 +198,7 @@ export const Header = () => {
             {/* Lang switcher */}
             <div
               className="hidden md:flex items-center gap-0.5 rounded-lg p-0.5"
-              style={{ background: 'rgba(0,0,0,0.05)' }}
+              style={{ background: overHero ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.12)' }}
             >
               {(['FR', 'EN'] as const).map((lang) => (
                 <button
@@ -196,7 +208,7 @@ export const Header = () => {
                   style={
                     language === lang
                       ? { background: '#fff', color: '#1a1a24', boxShadow: '0 1px 3px rgba(0,0,0,0.12)' }
-                      : { color: '#5a5a6a' }
+                      : { color: navColor }
                   }
                 >
                   {lang}
@@ -207,10 +219,10 @@ export const Header = () => {
             {/* CTA */}
             <button
               onClick={() => document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' })}
-              className="hidden md:inline-flex items-center justify-center px-5 py-2 text-[13px] font-semibold text-white rounded-lg transition-all"
-              style={{ background: '#1a1a24' }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = '#2d2d3a')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = '#1a1a24')}
+              className="hidden md:inline-flex items-center justify-center px-5 py-2 text-[13px] font-semibold rounded-lg transition-all"
+              style={{ background: '#ffffff', color: '#0a1f38' }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = '0.88')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = '1')}
             >
               {t('header.downloadApp')}
             </button>
@@ -218,7 +230,7 @@ export const Header = () => {
             {/* Mobile toggle */}
             <button
               className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg transition-colors"
-              style={{ color: '#1a1a24' }}
+              style={{ color: '#ffffff' }}
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               aria-label="Menu"
             >
@@ -246,7 +258,7 @@ export const Header = () => {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
             className="md:hidden overflow-hidden"
-            style={{ background: 'rgba(255,255,255,0.97)', borderTop: '1px solid rgba(0,0,0,0.06)' }}
+            style={{ background: 'rgba(6,20,40,0.98)', borderTop: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}
           >
             <div className="container-custom py-4 flex flex-col gap-1">
               {navLinks.map((link) => (
@@ -256,7 +268,7 @@ export const Header = () => {
                   target={link.external ? '_blank' : undefined}
                   rel={link.external ? 'noopener noreferrer' : undefined}
                   className="px-4 py-3 text-sm font-medium rounded-xl transition-colors"
-                  style={{ color: '#1a1a24' }}
+                  style={{ color: '#ffffff' }}
                   onClick={() => setIsMobileOpen(false)}
                 >
                   {link.name}
@@ -265,7 +277,7 @@ export const Header = () => {
 
               {/* Articles in mobile menu */}
               <div className="px-4 pt-2 pb-1">
-                <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: '#94a3b8' }}>Articles</p>
+                <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.45)' }}>Articles</p>
                 <div className="flex flex-col gap-1">
                   {articles.map((a, i) => (
                     <Link
@@ -277,20 +289,20 @@ export const Header = () => {
                       <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0">
                         <img src={a.img} alt={a.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
                       </div>
-                      <p className="text-xs font-medium line-clamp-1" style={{ color: '#1a1a24' }}>{a.title}</p>
+                      <p className="text-xs font-medium line-clamp-1" style={{ color: '#ffffff' }}>{a.title}</p>
                     </Link>
                   ))}
                 </div>
               </div>
 
-              <div className="h-px mx-2 my-2" style={{ background: 'rgba(0,0,0,0.07)' }} />
+              <div className="h-px mx-2 my-2" style={{ background: 'rgba(255,255,255,0.08)' }} />
               <div className="flex items-center gap-2 px-4">
                 {(['FR', 'EN'] as const).map((lang) => (
                   <button
                     key={lang}
                     onClick={() => { setLanguage(lang); setIsMobileOpen(false); }}
                     className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                    style={language === lang ? { background: '#1a1a24', color: '#fff' } : { color: '#5a5a6a', background: 'rgba(0,0,0,0.04)' }}
+                    style={language === lang ? { background: '#ffffff', color: '#0a1f38' } : { color: 'rgba(255,255,255,0.7)', background: 'rgba(255,255,255,0.08)' }}
                   >
                     {lang}
                   </button>
@@ -298,8 +310,8 @@ export const Header = () => {
               </div>
               <button
                 onClick={() => { setIsMobileOpen(false); document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="mt-2 mx-2 py-3 text-sm font-semibold text-white rounded-xl"
-                style={{ background: '#1a1a24' }}
+                className="mt-2 mx-2 py-3 text-sm font-semibold rounded-xl"
+                style={{ background: '#ffffff', color: '#0a1f38' }}
               >
                 {t('header.downloadApp')}
               </button>

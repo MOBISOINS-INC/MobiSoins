@@ -15,9 +15,9 @@ export const Stats = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-16" style={{ background: 'rgba(255,255,255,0.82)' }}>
+    <section className="relative py-8">
       <div className="container-custom">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-y-10 gap-x-4">
           {stats.map((stat, i) => (
             <motion.div
               key={i}
@@ -25,15 +25,15 @@ export const Stats = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col items-center text-center gap-2"
+              className="relative flex flex-col items-center text-center gap-2 md:[&:not(:first-child)]:before:content-[''] md:[&:not(:first-child)]:before:absolute md:[&:not(:first-child)]:before:left-0 md:[&:not(:first-child)]:before:top-1/2 md:[&:not(:first-child)]:before:-translate-y-1/2 md:[&:not(:first-child)]:before:h-10 md:[&:not(:first-child)]:before:w-px md:[&:not(:first-child)]:before:bg-white/10"
             >
               <span
-                className="text-4xl md:text-5xl font-semibold tracking-tight"
-                style={{ color: '#1a1a24', letterSpacing: '-0.04em' }}
+                className="text-4xl md:text-5xl font-medium text-white"
+                style={{ letterSpacing: '-0.045em' }}
               >
                 {stat.value}
               </span>
-              <span className="text-xs font-medium uppercase tracking-widest" style={{ color: '#94a3b8' }}>
+              <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/40">
                 {t(stat.labelKey)}
               </span>
             </motion.div>
