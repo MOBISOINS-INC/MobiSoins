@@ -11,8 +11,7 @@ const article: { FR: ArticleData; EN: ArticleData } = {
     title: 'Comment bien se pr\u00e9parer \u00e0 sa premi\u00e8re visite avec MobiSoins',
     subtitle: 'Recevoir des soins infirmiers \u00e0 domicile, c\u2019est b\u00e9n\u00e9ficier d\u2019un suivi professionnel directement dans son environnement. Une premi\u00e8re visite bien pr\u00e9par\u00e9e permet d\u2019assurer des soins s\u00e9curitaires, efficaces et adapt\u00e9s.',
     readTime: '4 min',
-    image: '/images/articles/premiere-visite.jpg',
-    fallbackImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
+    image: '/nurses/care-1.png',
     sections: [
       {
         title: '1. Rassembler les informations essentielles',
@@ -65,8 +64,7 @@ const article: { FR: ArticleData; EN: ArticleData } = {
     title: 'How to Prepare for Your First Visit with MobiSoins',
     subtitle: 'Receiving home nursing care means benefiting from professional follow-up directly in your own environment. A well-prepared first visit ensures safe, effective, and personalized care.',
     readTime: '4 min',
-    image: '/images/articles/premiere-visite.jpg',
-    fallbackImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
+    image: '/nurses/care-1.png',
     sections: [
       {
         title: '1. Gather essential information',

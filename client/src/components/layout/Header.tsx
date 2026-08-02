@@ -23,25 +23,22 @@ export const Header = () => {
 
   const articles = [
     {
-      img: '/images/articles/telesante.jpg',
+      img: '/nurses/nurse-09.jpeg',
       tag: t('blog.article1Tag1'),
       title: t('blog.article1Title'),
       href: '/articles/telesante',
-      fallback: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=200&q=70',
     },
     {
-      img: '/images/articles/premiere-visite.jpg',
+      img: '/nurses/care-1.png',
       tag: t('blog.article2Tag1'),
       title: t('blog.article2Title'),
       href: '/articles/premiere-visite',
-      fallback: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=200&q=70',
     },
     {
-      img: '/images/articles/soins-aines.jpg',
+      img: '/nurses/elder-03.jpeg',
       tag: t('blog.article3Tag1'),
       title: t('blog.article3Title'),
       href: '/articles/soins-aines',
-      fallback: 'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?auto=format&fit=crop&w=200&q=70',
     },
   ];
 
@@ -191,7 +188,7 @@ export const Header = () => {
                           className="group flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-white/5"
                         >
                           <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
-                            <img src={a.img} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
+                            <img src={a.img} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: '#98B690' }}>{a.tag}</span>
@@ -370,7 +367,7 @@ export const Header = () => {
                           onClick={() => setIsMobileOpen(false)}
                         >
                           <div className="w-9 h-9 rounded-lg overflow-hidden shrink-0">
-                            <img src={a.img} alt={a.title} className="w-full h-full object-cover" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).src = a.fallback; }} />
+                            <img src={a.img} alt={a.title} className="w-full h-full object-cover" loading="lazy" />
                           </div>
                           <p className="text-xs font-medium line-clamp-1" style={{ color: '#ffffff' }}>{a.title}</p>
                         </Link>

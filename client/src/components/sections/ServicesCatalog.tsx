@@ -8,151 +8,200 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { SERVICE_CATEGORIES, type ServiceCategory } from '../../data/services';
+import { SERVICE_PRICING, PRICE_RANGE } from '../../data/pricing';
+
+/* ─── Catalogue des services (/services) ───────────────────────────────────
+   Was a grid of nine `glass-dark` cards, two per row, each listing its
+   treatments as bare links — plus a full marketing header and a two-image
+   band before any of it. Combined with the `Services` section stacked above,
+   the page opened with two complete headers before the first piece of data.
+
+   The page's job is not to convince. That happens on the landing page; by the
+   time someone is on /services they are looking for a specific treatment and
+   want to know whether it is offered, how long it takes and what it costs.
+
+   So this is now a directory: a sticky specialty nav on the left, all 28
+   treatments listed on the right with their real one-line clinical
+   descriptions. Deep links (/services#pediatrics) still land on the right
+   group — the landing page's index relies on them.
+
+   Duration and price columns render per row only when data/pricing.ts has an
+   entry for that slug. While that file is empty the column is simply absent,
+   rather than filling the page with "sur demande".
+   ---------------------------------------------------------------------- */
 
 const WAITLIST_URL =
   'https://docs.google.com/forms/d/1TaBNJ9M7Ks6LW5_Vfyqx5DodEPQZbo06bxX8PvJFLiw/viewform';
 
-const ICONS: Record<ServiceCategory['icon'], React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
+const ICONS: Record<ServiceCategory['icon'], React.ComponentType<{ className?: string }>> = {
   nursing: Stethoscope, vaccination: Syringe, chronic: HeartPulse, checkup: ClipboardCheck,
-  sexual: ShieldCheck, pediatrics: Baby, seniors: HeartHandshake, analysis: FlaskConical, enterprises: Building2,
+  sexual: ShieldCheck, pediatrics: Baby, seniors: HeartHandshake, analysis: FlaskConical,
+  enterprises: Building2,
 };
 
 const COPY = {
   FR: {
-    badge: 'Nos services',
-    title: 'Des soins complets, directement à domicile',
-    subtitle:
-      '9 spécialités et plus de 25 soins offerts par des infirmières certifiées OIIQ — des tout-petits aux aînés. Touchez un soin pour découvrir en quoi il consiste.',
-    featureCaption: 'Soins professionnels à domicile',
-    vaccineCaption: 'Vaccination pour toute la famille',
-    seniorCaption: 'Accompagnement des aînés',
-    hint: 'Touchez un soin pour en savoir plus',
+    badge: 'Catalogue',
+    title: 'Tous nos soins à domicile',
+    specialties: 'spécialités',
+    treatments: 'soins',
+    lede: 'Infirmières certifiées OIIQ, des tout-petits aux aînés.',
+    nav: 'Spécialités',
     ctaTitle: 'Prêt à recevoir des soins à la maison ?',
     ctaButton: 'Rejoindre la liste d’attente',
   },
   EN: {
-    badge: 'Our services',
-    title: 'Complete care, right at home',
-    subtitle:
-      '9 specialties and 25+ treatments delivered by OIIQ-certified nurses — from toddlers to seniors. Tap any service to see what it involves.',
-    featureCaption: 'Professional home care',
-    vaccineCaption: 'Vaccination for the whole family',
-    seniorCaption: 'Dedicated senior care',
-    hint: 'Tap a service to learn more',
+    badge: 'Catalogue',
+    title: 'Every treatment we offer at home',
+    specialties: 'specialties',
+    treatments: 'treatments',
+    lede: 'OIIQ-certified nurses, from toddlers to seniors.',
+    nav: 'Specialties',
     ctaTitle: 'Ready to get care at home?',
     ctaButton: 'Join the waiting list',
   },
 } as const;
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 export function ServicesCatalog() {
   const { language } = useLanguage();
   const c = COPY[language];
-  const lang = language === 'FR' ? 'fr' : 'en';
+
+  // Computed, never written by hand — the old copy claimed "plus de 25 soins"
+  // while the catalog held 28.
+  const totalTreatments = SERVICE_CATEGORIES.reduce((n, cat) => n + cat.services.length, 0);
+
+  const priceBySlug = new Map(SERVICE_PRICING.map((p) => [p.slug, p]));
+  const hasFigures = SERVICE_PRICING.length > 0;
 
   return (
-    <section className="relative py-12 sm:py-16 lg:py-20 overflow-hidden">
-      <div className="container-custom relative">
-        {/* Intro */}
+    <section className="relative py-12 sm:py-16">
+      <div className="container-custom">
+
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-2xl mb-8 sm:mb-12"
+          transition={{ duration: 0.7, ease: EASE }}
+          className="max-w-[46ch] mb-10 sm:mb-14"
         >
-          <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2 sm:mb-3 text-[#98B690]">{c.badge}</p>
-          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-semibold tracking-tight mb-3 sm:mb-5 text-white" style={{ letterSpacing: '-0.035em' }}>
-            {c.title}
-          </h1>
-          <p className="text-base sm:text-lg font-light leading-relaxed text-white/65">{c.subtitle}</p>
+          <p className="ms-eyebrow mb-4">{c.badge}</p>
+          <h1 className="ms-title mb-5">{c.title}</h1>
+          <p className="ms-lede">
+            {SERVICE_CATEGORIES.length} {c.specialties} · {totalTreatments} {c.treatments}. {c.lede}
+          </p>
         </motion.div>
 
-        {/* Feature image band */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="grid md:grid-cols-3 gap-4 mb-14"
-        >
-          <figure className="md:col-span-2 relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl h-[190px] sm:h-[280px] md:h-[420px] group">
-            <img src="/nurses/hero-nurse.png" alt={c.featureCaption}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              style={{ objectPosition: '50% 20%' }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-            <figcaption className="absolute bottom-4 left-4 flex items-center gap-2.5 rounded-full px-4 py-2"
-              style={{ background: 'rgba(3,18,38,0.55)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.16)' }}>
-              <span className="w-2 h-2 rounded-full bg-[#98B690]" />
-              <span className="text-sm font-medium text-white">{c.featureCaption}</span>
-            </figcaption>
-          </figure>
-          {/* Secondary image — desktop only, fills the side column */}
-          <figure className="hidden md:block relative rounded-3xl overflow-hidden border border-white/10 shadow-xl md:h-[420px] group">
-            <img src="/nurses/elder-06.jpeg" alt={c.seniorCaption}
-              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent pointer-events-none" />
-            <figcaption className="absolute bottom-3 left-3 text-xs font-medium text-white/90">{c.seniorCaption}</figcaption>
-          </figure>
-        </motion.div>
+        <div className="grid lg:grid-cols-12 gap-0 border-t ms-rule">
 
-        <p className="text-xs font-medium uppercase tracking-widest text-white/35 mb-5">{c.hint}</p>
-
-        {/* Catalog — one card per expertise; each service links to its detail page */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-5 items-start">
-          {SERVICE_CATEGORIES.map((cat, ci) => {
-            const Icon = ICONS[cat.icon];
-            return (
-              <motion.div
-                key={cat.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: (ci % 2) * 0.06, ease: 'easeOut' }}
-                className="glass-dark !rounded-2xl p-3.5 sm:p-6"
-              >
-                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                  <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5"
-                    style={{ background: 'rgba(78,102,69,0.2)', border: '1px solid rgba(152,182,144,0.35)' }}>
-                    <Icon style={{ color: '#98B690' }} />
+          {/* ── Sticky specialty nav. Scrolls horizontally below lg rather
+                than stacking nine rows above the content. ── */}
+          <nav
+            aria-label={c.nav}
+            className="lg:col-span-3 ms-rule border-b lg:border-b-0 lg:border-r py-4 lg:py-6 lg:pr-6"
+          >
+            <p className="ms-label mb-3 hidden lg:block">{c.nav}</p>
+            <div className="flex lg:flex-col gap-4 lg:gap-0 overflow-x-auto lg:overflow-visible lg:sticky lg:top-32">
+              {SERVICE_CATEGORIES.map((cat) => (
+                <a
+                  key={cat.id}
+                  href={`#${cat.id}`}
+                  className="group flex items-center gap-2.5 lg:gap-3 py-1 lg:py-2 whitespace-nowrap text-sm text-ink-2 transition-colors hover:text-sage"
+                >
+                  {language === 'FR' ? cat.nameFr : cat.nameEn}
+                  <span className="ms-meta tabular-nums hidden lg:inline lg:ml-auto">
+                    {cat.services.length}
                   </span>
-                  <h3 className="text-[13px] sm:text-base font-semibold text-white leading-snug">{lang === 'fr' ? cat.nameFr : cat.nameEn}</h3>
-                </div>
+                </a>
+              ))}
+            </div>
+          </nav>
 
-                <ul className="flex flex-col divide-y divide-white/[0.06]">
-                  {cat.services.map((s) => (
-                    <li key={s.slug}>
-                      <Link
-                        href={`/services/${s.slug}`}
-                        className="flex items-center justify-between gap-2 sm:gap-3 py-2 sm:py-3 group"
-                      >
-                        <span className="text-xs sm:text-sm text-white/75 group-hover:text-white transition-colors leading-snug">
-                          {lang === 'fr' ? s.nameFr : s.nameEn}
-                        </span>
-                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 text-white/35 transition-all group-hover:text-[#98B690] group-hover:translate-x-0.5" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            );
-          })}
+          {/* ── Groups ── */}
+          <div className="lg:col-span-9 lg:pl-10">
+            {SERVICE_CATEGORIES.map((cat, ci) => {
+              const Icon = ICONS[cat.icon];
+              return (
+                <motion.section
+                  key={cat.id}
+                  // Deep-link target for /services#<id>; scroll-mt clears the
+                  // fixed header.
+                  id={cat.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ delay: Math.min(ci, 3) * 0.05, duration: 0.55, ease: EASE }}
+                  className="scroll-mt-28 md:scroll-mt-32 pt-8 sm:pt-10 first:pt-6"
+                >
+                  <div className="flex items-baseline gap-3 border-b ms-rule pb-3">
+                    <Icon className="w-[18px] h-[18px] shrink-0 text-sage translate-y-0.5" />
+                    <h2 className="ms-title-sm text-[1.3rem]">
+                      {language === 'FR' ? cat.nameFr : cat.nameEn}
+                    </h2>
+                    <span className="ms-meta ml-auto shrink-0 tabular-nums">
+                      {cat.services.length} {c.treatments}
+                    </span>
+                  </div>
+
+                  <ul>
+                    {cat.services.map((s) => {
+                      const price = priceBySlug.get(s.slug);
+                      return (
+                        <li key={s.slug} className="ms-rule-soft border-b">
+                          <Link
+                            href={`/services/${s.slug}`}
+                            className="group grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[1fr_auto] items-baseline"
+                          >
+                            <span className="ms-item-title transition-colors group-hover:text-sage">
+                              {language === 'FR' ? s.nameFr : s.nameEn}
+                            </span>
+
+                            {hasFigures && (
+                              <span className="flex items-baseline gap-5 tabular-nums sm:row-span-2 sm:self-center">
+                                <span className="ms-meta">
+                                  {price?.minutes != null ? `${price.minutes} min` : '—'}
+                                </span>
+                                <span className="ms-item-title">
+                                  {price?.priceFrom != null
+                                    ? `${price.priceFrom} ${PRICE_RANGE.currency}`
+                                    : '—'}
+                                </span>
+                              </span>
+                            )}
+
+                            <span className="ms-body-sm text-ink-3 max-w-[68ch] sm:col-start-1">
+                              {language === 'FR' ? s.shortFr : s.shortEn}
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </motion.section>
+              );
+            })}
+          </div>
         </div>
 
-        {/* CTA */}
+        {/* ── Closing action ── */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="glass-dark !rounded-3xl mt-14 px-8 py-12 flex flex-col items-center text-center gap-6"
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: EASE }}
+          className="mt-14 sm:mt-20 border-t ms-rule pt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
         >
-          <h2 className="text-2xl md:text-3xl font-semibold text-white tracking-tight" style={{ letterSpacing: '-0.02em' }}>
-            {c.ctaTitle}
-          </h2>
+          <h2 className="ms-title-sm max-w-[24ch]">{c.ctaTitle}</h2>
           <a
             href={WAITLIST_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-semibold text-white overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
-            style={{ background: 'linear-gradient(180deg, #0a4a85 0%, #003366 55%, #00264d 100%)', boxShadow: '0 10px 30px rgba(0,51,102,0.45), inset 0 1px 0 rgba(255,255,255,0.18)' }}
+            className="group inline-flex items-center gap-2.5 rounded-full px-7 py-4 text-[0.9375rem] font-semibold transition-transform duration-300 ease-out hover:-translate-y-0.5 shrink-0 self-start"
+            style={{
+              background: 'var(--color-ink-1)',
+              color: '#0a1f38',
+              boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
+            }}
           >
             {c.ctaButton}
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />

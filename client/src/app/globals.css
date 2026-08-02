@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+/* Fonts are loaded with next/font in app/layout.tsx, which self-hosts them and
+   exposes --font-inter / --font-newsreader. They used to come from an
+   `@import url(fonts.googleapis.com/...)` on this line — Turbopack strips that
+   external import out of the emitted CSS, so the faces never actually loaded
+   and every rule quietly fell back to the system stack. next/font also removes
+   the render-blocking round-trip and cannot fail silently. */
 
 @import "tailwindcss";
 
@@ -58,10 +63,37 @@
   --color-background-light: #f7f9fa;
   --color-background-white: #ffffff;
 
-  /* Fonts */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: "Inter", -apple-system, sans-serif;
-  --font-accent: "Inter", -apple-system, sans-serif;
+  /* ── Dark-section ink scale ──────────────────────────────────────────
+     Three text tiers, not six. The sections below the hero used to build
+     hierarchy from white/70 … white/40, which reads flat. Contrast should
+     come from size and weight; these just set the tier. */
+  --color-ink-1: #f2f7fc;                    /* primary — headings */
+  --color-ink-2: rgba(235, 243, 251, 0.66);  /* secondary — body copy */
+  --color-ink-3: rgba(235, 243, 251, 0.40);  /* tertiary — meta, captions */
+  --color-sage: #98b690;                     /* accent — the one brand green */
+  --color-hairline: rgba(235, 243, 251, 0.11);
+  --color-hairline-soft: rgba(235, 243, 251, 0.06);
+
+  /* ── Ground tiers ────────────────────────────────────────────────────
+     The body below the hero used to be one flat #0a1f38 for its entire
+     length, so eight sections read as a single undifferentiated column.
+     Three tiers give the page a tonal rhythm without introducing a second
+     hue: recessed bands (data, index, tariffs) sit back, the base carries
+     the reading sections, and lift is for panels raised off either. */
+  --color-ground-deep: #061729;
+  --color-ground: #0a1f38;
+  --color-ground-lift: #10294a;
+
+  /* Fonts. The var() indirection is what next/font feeds — the literal name
+     stays as the fallback so nothing breaks if the provider changes. */
+  --font-sans: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: var(--font-inter), "Inter", -apple-system, sans-serif;
+  --font-accent: var(--font-inter), "Inter", -apple-system, sans-serif;
+  /* Display face — section titles and large numerals only. Everything
+     operational (labels, body, UI) stays on Inter. Inter at every size on
+     navy is the exact house style of every other health-tech landing page;
+     a high-contrast serif at display size is what separates this one. */
+  --font-display: var(--font-newsreader), "Newsreader", "Iowan Old Style", Palatino, Georgia, ui-serif, serif;
 
   /* Animations */
   --animate-fade-in: fadeIn 0.5s ease-out;
@@ -93,12 +125,12 @@
     position: relative;
     background-color: #04142a;
     color: #1a1a24;
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Inter", -apple-system, sans-serif;
+    font-family: var(--font-heading);
     font-weight: 600;
     color: #1a1a24;
     letter-spacing: -0.02em;
@@ -245,3 +277,202 @@
 .gpsmap-d45 { animation-delay: 4.5s;  }
 
 @keyframes gpsmap-move { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
+
+/* ── Dark-section design system ───────────────────────────────────────────
+   Every section below the hero used to re-declare its own badge / title /
+   body formula inline, and built hierarchy out of six near-identical
+   translucent whites (white/70 … white/40). That flatness is what made the
+   page read as a template.
+
+   Rules here:
+   • THREE text tiers only. Contrast comes from size and weight, not opacity.
+   • One canonical eyebrow, title and lede — sections compose, never redefine.
+   • Fluid type via clamp(), so the scale holds from 360px to 1400px without
+     a pile of sm:/lg: overrides.
+   ---------------------------------------------------------------------- */
+
+@layer components {
+  /* Section eyebrow. Defined once, used everywhere. */
+  .ms-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: var(--color-sage);
+  }
+
+  /* Section title. Display serif, and therefore lighter weight and looser
+     tracking than the old Inter 600 — a high-contrast serif at 3rem needs
+     neither the weight nor the negative tracking a grotesque does. */
+  .ms-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 1.05rem + 2.75vw, 3.375rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: var(--color-ink-1);
+    text-wrap: balance;
+  }
+
+  /* One step down — used for the closing CTA and sub-heads. */
+  .ms-title-sm {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -0.012em;
+    color: var(--color-ink-1);
+    text-wrap: balance;
+  }
+
+  /* Intro paragraph. Measure is capped in ch so the line length stays
+     readable regardless of viewport. */
+  .ms-lede {
+    font-size: clamp(0.9375rem, 0.86rem + 0.4vw, 1.125rem);
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--color-ink-2);
+    max-width: 48ch;
+  }
+
+  .ms-body {
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.62;
+    color: var(--color-ink-2);
+  }
+
+  .ms-body-sm {
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--color-ink-2);
+  }
+
+  /* Item titles inside lists and cards. */
+  .ms-item-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.011em;
+    color: var(--color-ink-1);
+  }
+
+  .ms-meta {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--color-ink-3);
+  }
+
+  /* Hairline rule — the main structural device replacing bordered cards. */
+  .ms-rule { border-color: var(--color-hairline); }
+
+  /* Large ghosted step numeral. Tabular so 01/02/03 align optically. */
+  .ms-numeral {
+    font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem);
+    font-weight: 600;
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: rgba(235, 243, 251, 0.13);
+  }
+
+  /* ── Added with the restructure ─────────────────────────────────────── */
+
+  /* Hard numbers — proof band, tariff figures. Display serif, full ink:
+     these are the most verifiable thing on the page and should read that
+     way, which is the opposite of .ms-numeral's decorative ghosting. */
+  .ms-stat {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 1.5rem + 2.6vw, 3.5rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink-1);
+  }
+
+  /* Small uppercase utility label — table headers, stat captions, step
+     counters. Inter, never the display face. */
+  .ms-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+
+  /* Panel raised off whichever ground it sits on. */
+  .ms-panel {
+    background: var(--color-ground-lift);
+    border: 1px solid var(--color-hairline);
+  }
+
+  /* Softer divider for rows *inside* a block, so nested lists don't compete
+     with the structural hairlines that separate the blocks themselves. */
+  .ms-rule-soft { border-color: var(--color-hairline-soft); }
+
+  /* ── Legal prose ──────────────────────────────────────────────────────
+     The legal pages used `prose prose-lg prose-invert`, but
+     @tailwindcss/typography is not installed in this project, so those
+     classes were inert and every heading carried its own utilities inline.
+     Styling them here keeps the three documents consistent and lets their
+     markup stay plain HTML. */
+  .legal-prose { color: var(--color-ink-2); }
+
+  .legal-prose section + section { margin-top: 2.5rem; }
+
+  .legal-prose h2 {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    color: var(--color-ink-1);
+    margin-bottom: 0.75rem;
+    scroll-margin-top: 7rem;   /* clears the fixed header on anchor jumps */
+  }
+
+  .legal-prose h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink-1);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .legal-prose p {
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--color-ink-2);
+  }
+  .legal-prose p + p { margin-top: 0.75rem; }
+
+  .legal-prose ul,
+  .legal-prose ol {
+    margin-top: 0.75rem;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .legal-prose ul { list-style: disc; }
+  .legal-prose ol { list-style: decimal; }
+  .legal-prose li {
+    font-size: 0.9375rem;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--color-ink-2);
+  }
+  .legal-prose li::marker { color: var(--color-ink-3); }
+
+  .legal-prose a {
+    color: var(--color-sage);
+    text-underline-offset: 4px;
+    text-decoration-line: underline;
+  }
+}
