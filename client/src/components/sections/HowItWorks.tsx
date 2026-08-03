@@ -4,217 +4,172 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 
-/* ─── Comment ça marche ────────────────────────────────────────────────────
-   Was: three hairline-divided text columns with large ghosted numerals, then
-   a full-bleed photo strip. It described the product without ever showing it,
-   and the photo strip was the third large photo in four screens.
+/* ─── Steps ────────────────────────────────────────────────────── */
 
-   Now: a sticky header column on the left, the three steps stacked on the
-   right, each paired with the app screen at that exact moment. The screens
-   are composed in markup rather than screenshotted so they stay translated,
-   stay sharp on every display, and cost no image weight.
+const steps = [
+  {
+    num: 'ÉTAPE 01',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    ),
+    titleKey: 'howItWorks.step1.title',
+    descKey: 'howItWorks.step1.description',
+  },
+  {
+    num: 'ÉTAPE 02',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+    ),
+    titleKey: 'howItWorks.step2.title',
+    descKey: 'howItWorks.step2.description',
+  },
+  {
+    num: 'ÉTAPE 03',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+      </svg>
+    ),
+    titleKey: 'howItWorks.step3.title',
+    descKey: 'howItWorks.step3.description',
+  },
+];
 
-   Numbering is kept HERE AND ONLY HERE. This is the one section on the page
-   whose content is a genuine sequence, so 01/02/03 carries information; the
-   restructure strips it out everywhere it was purely decorative.
-   ---------------------------------------------------------------------- */
-
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-/* Shared shell for the three screens — a raised panel on whatever ground the
-   section sits on. */
-function Screen({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className="ms-panel rounded-2xl p-3.5 flex flex-col gap-2.5"
-      aria-hidden="true"
-    >
-      {children}
-    </div>
-  );
-}
-
-function ScreenHead({ label, meta }: { label: string; meta: string }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="ms-label text-[0.625rem]">{label}</span>
-      <span className="text-[0.6875rem] font-semibold text-sage tabular-nums">
-        {meta}
-      </span>
-    </div>
-  );
-}
-
-function Row({
-  label,
-  meta,
-  active = false,
-}: {
-  label: string;
-  meta: string;
-  active?: boolean;
-}) {
-  return (
-    <div
-      className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5"
-      style={{
-        background: active ? 'rgba(152,182,144,0.10)' : 'rgba(235,243,251,0.045)',
-        border: `1px solid ${
-          active ? 'rgba(152,182,144,0.42)' : 'var(--color-hairline-soft)'
-        }`,
-      }}
-    >
-      <span className="text-[0.8125rem] font-semibold text-ink-1 truncate">
-        {label}
-      </span>
-      <span
-        className={`text-[0.75rem] shrink-0 ${active ? 'text-sage' : 'text-ink-3'}`}
-      >
-        {meta}
-      </span>
-    </div>
-  );
-}
+/* ─── Section ──────────────────────────────────────────────────── */
 
 export const HowItWorks = () => {
   const { t } = useLanguage();
 
-  const steps = [
-    {
-      n: '01',
-      title: t('howItWorks.step1.title'),
-      desc: t('howItWorks.step1.description'),
-      screen: (
-        <Screen>
-          <ScreenHead label={t('howItWorksApp.s1Label')} meta={t('howItWorksApp.s1Step')} />
-          <Row label={t('howItWorksApp.s1Service')} meta={t('howItWorksApp.s1ServiceMeta')} active />
-          <Row label={t('howItWorksApp.s1Time')} meta={t('howItWorksApp.s1TimeMeta')} />
-          <Row label={t('howItWorksApp.s1Address')} meta={t('howItWorksApp.s1AddressMeta')} />
-          <div className="h-1 rounded-full overflow-hidden bg-[rgba(235,243,251,0.12)]">
-            <div className="h-full w-1/3 bg-sage" />
-          </div>
-        </Screen>
-      ),
-    },
-    {
-      n: '02',
-      title: t('howItWorks.step2.title'),
-      desc: t('howItWorks.step2.description'),
-      screen: (
-        <Screen>
-          <ScreenHead label={t('howItWorksApp.s2Label')} meta={t('howItWorksApp.s2Eta')} />
-          {/* Route sketch. A dashed path between two pins says "en route"
-              faster than any label, and needs no map tiles or API key. */}
-          <div
-            className="relative h-[74px] rounded-lg overflow-hidden"
-            style={{
-              background: 'linear-gradient(140deg, #0e2b4b, #0a1f38)',
-              border: '1px solid var(--color-hairline-soft)',
-            }}
-          >
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 190 74"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M18 58 C 60 58, 62 26, 104 26 S 150 16, 172 16"
-                fill="none"
-                stroke="rgba(152,182,144,0.55)"
-                strokeWidth="1.5"
-                strokeDasharray="4 3"
-              />
-            </svg>
-            <span
-              className="absolute w-[7px] h-[7px] rounded-full bg-sage"
-              style={{ left: 14, top: 53, boxShadow: '0 0 0 4px rgba(152,182,144,0.20)' }}
-            />
-            <span
-              className="absolute w-[7px] h-[7px] rounded-full"
-              style={{
-                left: 166,
-                top: 11,
-                background: 'var(--color-ink-1)',
-                boxShadow: '0 0 0 4px rgba(242,247,252,0.16)',
-              }}
-            />
-          </div>
-          <Row label={t('howItWorksApp.s2Nurse')} meta={t('howItWorksApp.s2NurseMeta')} active />
-        </Screen>
-      ),
-    },
-    {
-      n: '03',
-      title: t('howItWorks.step3.title'),
-      desc: t('howItWorks.step3.description'),
-      screen: (
-        <Screen>
-          <ScreenHead label={t('howItWorksApp.s3Label')} meta={t('howItWorksApp.s3Meta')} />
-          <Row label={t('howItWorksApp.s3Row1')} meta={t('howItWorksApp.s3Row1Meta')} />
-          <Row label={t('howItWorksApp.s3Row2')} meta={t('howItWorksApp.s3Row2Meta')} />
-          <Row label={t('howItWorksApp.s3Row3')} meta={t('howItWorksApp.s3Row3Meta')} active />
-        </Screen>
-      ),
-    },
-  ];
-
   return (
-    <section id="how-it-works" className="relative py-24 sm:py-32">
+    <section id="how-it-works" className="relative py-20 lg:py-24 overflow-hidden">
       <div className="container-custom">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div className="grid grid-cols-[1fr_0.82fr] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-4 sm:gap-10 lg:gap-24 items-center">
 
-          {/* Sticky header column — the title stays in view while the three
-              steps are read past it, instead of scrolling away above them. */}
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="lg:col-span-4 lg:sticky lg:top-32"
-          >
-            {/* No eyebrow here: the only available key is `header.howItWorks`,
-                which is the section title verbatim. Repeating it above itself
-                is exactly the filler the restructure is removing. */}
-            <h2 className="ms-title mb-5">{t('howItWorks.title')}</h2>
-            <p className="ms-lede">{t('howItWorks.subtitle')}</p>
-
-            {/* Fills the dead space under the lede in the sticky column. The source is
-                portrait, so it sits at its natural-ish 4:5 here without being cropped
-                into a band the way a full-width placement would force. */}
-            <figure className="relative mt-8 lg:mt-10 overflow-hidden rounded-2xl aspect-[4/5]">
-              <Image
-                src="/nurses/how-it-works.jpg"
-                alt={t('howItWorks.photoAlt')}
-                fill
-                quality={90}
-                sizes="(max-width: 1024px) 100vw, 420px"
-                className="object-cover object-[50%_28%]"
-              />
-            </figure>
-          </motion.div>
-
-          <div className="lg:col-span-8">
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.n}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ delay: i * 0.09, duration: 0.65, ease: EASE }}
-                /* The screen column is sized so the longest row label ("Confirm
-                   address" / "Confirmer l'adresse") and its status still fit
-                   side by side. At 210px both were being ellipsed. */
-                className="ms-rule border-t grid sm:grid-cols-[1fr_250px] lg:grid-cols-[1fr_300px] gap-6 sm:gap-8 items-center py-8 sm:py-10"
+          {/* Left: title + vertical process timeline */}
+          <div className="relative z-10 flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: "easeOut" as const }}
+              className="mb-6 sm:mb-14"
+            >
+              <h2
+                className="text-2xl sm:text-4xl md:text-6xl font-semibold tracking-tight mb-2 sm:mb-5 text-white"
+                style={{ letterSpacing: '-0.035em' }}
               >
-                <div>
-                  <p className="ms-label text-sage mb-3">{step.n}</p>
-                  <h3 className="ms-item-title mb-2.5">{step.title}</h3>
-                  <p className="ms-body-sm max-w-[44ch]">{step.desc}</p>
-                </div>
-                {step.screen}
-              </motion.div>
-            ))}
+                {t('howItWorks.title')}
+              </h2>
+              <p className="text-xs sm:text-base md:text-lg font-light max-w-md text-white/60 leading-relaxed">
+                {t('howItWorks.subtitle')}
+              </p>
+            </motion.div>
+
+            {/* Vertical timeline */}
+            <div className="relative">
+              {/* Connector line running through the nodes */}
+              <div
+                className="absolute top-5 bottom-5 left-5 sm:top-7 sm:bottom-7 sm:left-7 w-px"
+                style={{ background: 'linear-gradient(to bottom, rgba(152,182,144,0.55), rgba(152,182,144,0.15) 55%, rgba(255,255,255,0.04))' }}
+              />
+
+              <div className="flex flex-col gap-5 sm:gap-10">
+                {steps.map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: 24 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.14, duration: 0.6, ease: "easeOut" as const }}
+                    className="relative flex items-start gap-3 sm:gap-6"
+                  >
+                    {/* Icon node */}
+                    <div
+                      className="relative z-10 w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-[22px] sm:[&_svg]:h-[22px]"
+                      style={{
+                        background: 'rgba(78,102,69,0.2)',
+                        border: '1px solid rgba(152,182,144,0.4)',
+                        color: '#98B690',
+                        boxShadow: '0 0 0 8px #0a1f38',
+                      }}
+                    >
+                      {step.icon}
+                    </div>
+                    <div className="pt-0.5 sm:pt-1 min-w-0">
+                      <p className="text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] sm:tracking-[0.22em] mb-1 sm:mb-2" style={{ color: 'rgba(152,182,144,0.85)' }}>
+                        {step.num}
+                      </p>
+                      <h3 className="text-sm sm:text-xl font-semibold mb-1 sm:mb-1.5 leading-snug text-white">
+                        {t(step.titleKey)}
+                      </h3>
+                      <p className="text-[11px] sm:text-[15px] font-light leading-relaxed text-white/55 max-w-sm">
+                        {t(step.descKey)}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
+
+          {/* Right: large cinematic nurse photo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" as const }}
+            className="relative"
+          >
+            {/* Subtle green ambient glow behind the photo — kept low so the
+                background stays a single clean shade */}
+            <div
+              className="absolute -inset-6 -z-10 pointer-events-none"
+              style={{ background: 'radial-gradient(50% 50% at 55% 42%, rgba(78,102,69,0.22), transparent 70%)' }}
+            />
+            <div
+              className="relative w-full min-h-[220px] sm:min-h-[400px] lg:min-h-[480px] max-h-[540px] rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-[0_50px_120px_rgba(0,0,0,0.6)]"
+              style={{ border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              <Image
+                src="/nurses/nurse-08.jpeg"
+                alt="Infirmière MobiSoins prodiguant des soins à une patiente à domicile"
+                fill
+                unoptimized
+                sizes="(max-width: 1024px) 100vw, 55vw"
+                className="object-cover"
+                style={{ objectPosition: '50% 22%' }}
+              />
+              {/* Cinematic gradient anchoring the caption */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{ background: 'linear-gradient(180deg, rgba(3,18,38,0) 45%, rgba(3,18,38,0.5) 78%, rgba(3,18,38,0.85) 100%)' }}
+              />
+
+              {/* Credential caption inside the frame */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.45, duration: 0.5, ease: "easeOut" as const }}
+                className="glass-dark absolute inset-x-2 bottom-2 sm:inset-x-7 sm:bottom-7 flex items-center gap-2 sm:gap-3.5 px-2.5 py-2 sm:px-5 sm:py-4 !rounded-xl sm:!rounded-2xl"
+              >
+                <span className="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-green-400 animate-pulse block shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-sm font-semibold leading-tight text-white truncate">
+                    Infirmière OIIQ
+                  </p>
+                  <p className="text-[9px] sm:text-xs font-light text-white/60 truncate">
+                    Soins professionnels à domicile
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
 
         </div>
       </div>

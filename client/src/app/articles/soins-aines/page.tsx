@@ -11,7 +11,8 @@ const article: { FR: ArticleData; EN: ArticleData } = {
     title: 'Les avantages des soins \u00e0 domicile pour les a\u00een\u00e9s',
     subtitle: 'Et si la meilleure place pour vieillir n\u2019\u00e9tait pas l\u2019h\u00f4pital\u2026 mais tout simplement chez soi ? Aujourd\u2019hui, les soins \u00e0 domicile ne sont plus une alternative secondaire : ils deviennent une v\u00e9ritable r\u00e9volution silencieuse dans notre fa\u00e7on d\u2019accompagner les a\u00een\u00e9s.',
     readTime: '6 min',
-    image: '/nurses/elder-03.jpeg',
+    image: '/images/articles/soins-aines.jpg',
+    fallbackImage: 'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?auto=format&fit=crop&w=1200&q=80',
     sections: [
       {
         title: '1. Pr\u00e9server l\u2019autonomie\u2026 r\u00e9ellement',
@@ -65,7 +66,8 @@ const article: { FR: ArticleData; EN: ArticleData } = {
     title: 'The Benefits of Home Care for Seniors',
     subtitle: 'What if the best place to age wasn\u2019t the hospital\u2026 but simply at home? Today, home care is no longer a secondary alternative: it\u2019s becoming a quiet revolution in how we support our seniors.',
     readTime: '6 min',
-    image: '/nurses/elder-03.jpeg',
+    image: '/images/articles/soins-aines.jpg',
+    fallbackImage: 'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?auto=format&fit=crop&w=1200&q=80',
     sections: [
       {
         title: '1. Truly preserving autonomy',

@@ -30,10 +30,7 @@
       "Bash(which magick *)",
       "Bash(python3 -c \"import PIL; print\\('PIL', PIL.__version__\\)\")",
       "Bash(cd *)",
-      "Bash(python3)",
-      "Bash(sort -t: -k3)",
-      "Bash(awk -F: '{print $3}')",
-      "Bash(grep -n \"^  {$\\\\|id: '\" src/data/services.ts)"
+      "Bash(python3)"
     ]
   }
 }

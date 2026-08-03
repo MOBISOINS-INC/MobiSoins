@@ -1,29 +1,6 @@
 import type { Metadata } from 'next';
-import { Inter, Newsreader } from 'next/font/google';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import './globals.css';
-
-/* Both faces are self-hosted by next/font and exposed to globals.css as CSS
-   variables. They were previously requested with an @import in globals.css,
-   which Turbopack strips from the emitted stylesheet — so neither face was
-   ever actually loading and everything rendered in the system fallback. */
-
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-// Display face — section titles and the large figures only. Everything
-// operational stays on Inter.
-const newsreader = Newsreader({
-  subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  style: ['normal'],
-  variable: '--font-newsreader',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'MobiSoins - Soins Infirmiers à Domicile au Québec',
@@ -65,9 +42,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${newsreader.variable}`}>
+    <html lang="fr">
       <head>
         <link rel="preconnect" href="https://api.web3forms.com" crossOrigin="" />
+        <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://i.pravatar.cc" />
         <link rel="dns-prefetch" href="https://placehold.co" />
       </head>

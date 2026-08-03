@@ -1,13 +1,41 @@
 'use client';
 
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { PlayStoreButton } from '../ui/play-store-button';
 import { AppStoreButton } from '../ui/app-store-button';
 
+// Hero carousel slides — individual nurse shots only (no group photos).
+// `position` frames the photo on desktop; `mobile` pushes the nurse toward the
+// right on narrow screens so she clears the text on the left.
+type HeroSlide = { src: string; position: string; mobile: string; mobileSrc?: string };
+const HERO_SLIDES: HeroSlide[] = [
+  // First slide uses a dedicated portrait shot on mobile (mobileSrc) — desktop keeps hero-wide.
+  { src: '/nurses/hero-wide.png', position: '15% 50%', mobile: '34% 26%', mobileSrc: '/nurses/hero-mobile.png' },
+  { src: '/nurses/care-2.png', position: '58% 40%', mobile: '72% 42%' },
+  { src: '/nurses/hero-wide-2.png', position: '48% 50%', mobile: '42% 50%' },
+  { src: '/nurses/hero-option-2.png', position: '50% 8%', mobile: '56% 14%' },
+  { src: '/nurses/hero-option-1.png', position: '50% 14%', mobile: '52% 12%' },
+];
+
+const SLIDE_INTERVAL = 6000;
+
 export const Hero = () => {
   const { t } = useLanguage();
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    const id = setInterval(
+      () => setActive((a) => (a + 1) % HERO_SLIDES.length),
+      SLIDE_INTERVAL
+    );
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <section
@@ -15,22 +43,23 @@ export const Hero = () => {
       className="relative w-full min-h-screen flex items-end sm:items-center overflow-hidden"
       style={{ backgroundColor: '#031226' }}
     >
-      {/* Main hero visual — full-bleed still. `priority` because this is the LCP element.
-          object-position is set in the <style> block below so a mobile media query can
-          override it (inline styles can't), pushing the nurse clear of the copy. */}
-      <Image
-        src="/nurses/hero-main.jpg"
-        alt=""
-        fill
-        priority
-        quality={90}
-        sizes="100vw"
-        className="hero-photo object-cover"
-      />
-      <style>{
-        `.hero-photo{object-position:28% 50%;}` +
-        `@media (max-width:640px){.hero-photo{object-position:50% 26%;}}`
-      }</style>
+      {/* Crossfading photo slides. background-position lives in the <style> block
+          below so a mobile media query can override it (inline styles cannot). */}
+      {HERO_SLIDES.map((slide, i) => (
+        <div
+          key={slide.src}
+          aria-hidden={i !== active}
+          className={`hero-slide-${i} absolute inset-0 bg-cover bg-no-repeat transition-opacity duration-[1200ms] ease-out`}
+          style={{
+            backgroundImage: `url(${slide.src})`,
+            opacity: i === active ? 1 : 0,
+          }}
+        />
+      ))}
+      <style>{HERO_SLIDES.map((s, i) =>
+        `.hero-slide-${i}{background-position:${s.position};}` +
+        `@media (max-width:640px){.hero-slide-${i}{background-position:${s.mobile};${s.mobileSrc ? `background-image:url(${s.mobileSrc}) !important;` : ''}}}`
+      ).join('')}</style>
 
       {/* Neutral-dark panel on the left for the text — clears off the photo on the right */}
       <div
@@ -45,9 +74,7 @@ export const Hero = () => {
         className="absolute inset-x-0 bottom-0 h-[45%] pointer-events-none"
         style={{
           background:
-            /* Resolves to solid earlier (82% instead of 90%) so the photo is fully
-               dissolved before the proof band begins — no visible cut at the seam. */
-            'linear-gradient(180deg, rgba(3,18,38,0) 0%, rgba(3,18,38,0.45) 42%, rgba(3,18,38,0.88) 68%, #031226 82%, #031226 100%)',
+            'linear-gradient(180deg, rgba(3,18,38,0) 0%, rgba(3,18,38,0.45) 45%, rgba(3,18,38,0.85) 72%, #031226 90%, #031226 100%)',
         }}
       />
       {/* Mobile only: gentle bottom-up gradient so the bottom-anchored text sits on a
@@ -66,27 +93,12 @@ export const Hero = () => {
       />
 
       <div className="container-custom w-full relative z-10 pt-28 pb-16">
-        <div className="max-w-[27rem]">
-          {/* Eyebrow — carries the two facts that qualify the offer (city, licensing)
-              without competing with the headline. */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-2 mb-4 md:mb-5 text-[0.7rem] sm:text-[0.75rem] font-accent font-bold uppercase tracking-[0.16em]"
-            style={{ color: '#b9d8ac', textShadow: '0 1px 3px rgba(3,18,38,0.6)' }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-            {t('hero.eyebrow')}
-          </motion.div>
-
+        <div className="max-w-2xl">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            // Sized to fit the copy column — at 6vw the second line overflowed and ran
-            // across the photo's subject. Cap keeps it contained on wide screens too.
-            className="text-[2.25rem] sm:text-[clamp(2.25rem,3.35vw,3rem)] font-semibold leading-[1.1] tracking-[-0.03em] mb-3 md:mb-5"
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[2.75rem] sm:text-[clamp(3rem,6vw,5.5rem)] font-semibold leading-[1.03] tracking-[-0.04em] mb-3 md:mb-6"
             style={{
               color: '#ffffff',
               textShadow: '0 1px 2px rgba(3,18,38,0.45), 0 3px 22px rgba(3,18,38,0.4)',
@@ -102,7 +114,7 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[0.95rem] sm:text-[clamp(0.95rem,1.15vw,1.05rem)] max-w-[23rem] leading-relaxed font-light mb-7 md:mb-8"
+            className="text-[0.95rem] sm:text-[clamp(1.1rem,1.5vw,1.3rem)] max-w-[540px] leading-relaxed font-light mb-7 md:mb-10"
             style={{
               color: '#ffffff',
               textShadow: '0 1px 3px rgba(3,18,38,0.5), 0 2px 14px rgba(3,18,38,0.4)',
@@ -154,6 +166,22 @@ export const Hero = () => {
             <AppStoreButton />
             <PlayStoreButton />
           </motion.div>
+
+          {/* Carousel indicators — hidden on mobile (auto-rotate only) */}
+          <div className="hidden sm:flex items-center gap-2.5 mt-6 sm:mt-12">
+            {HERO_SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                aria-label={`Voir la photo ${i + 1}`}
+                className="h-1.5 rounded-full transition-all duration-500"
+                style={{
+                  width: i === active ? '2rem' : '0.375rem',
+                  background: i === active ? '#ffffff' : 'rgba(255,255,255,0.4)',
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

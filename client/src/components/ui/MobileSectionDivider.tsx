@@ -19,21 +19,15 @@ type Variant = 'pulse' | 'route' | 'stars' | 'plane' | 'phone' | 'envelope';
 export function MobileSectionDivider({ variant = 'pulse' }: { variant?: Variant }) {
   const rawId = useId().replace(/:/g, '');
 
-  // Genuinely mobile-only, as documented. This previously rendered at every
-  // breakpoint (py-3 sm:py-10 lg:py-14, w-60 sm:w-[30rem] lg:w-[38rem]),
-  // so desktop got an animated car, paper plane and ECG trace between every
-  // section. On mobile they usefully mark the seam between stacked sections;
-  // on desktop the sections have their own spacing and hairline rhythm, and
-  // the moving illustrations read as novelty rather than craft.
   return (
-    <div className="relative sm:hidden flex items-center justify-center py-3" aria-hidden>
+    <div className="relative flex items-center justify-center py-3 sm:py-10 lg:py-14" aria-hidden>
       {/* soft green glow */}
       <div
-        className="absolute w-48 h-14 rounded-full blur-2xl pointer-events-none"
+        className="absolute w-48 sm:w-[26rem] lg:w-[34rem] h-14 sm:h-28 rounded-full blur-2xl pointer-events-none"
         style={{ background: 'radial-gradient(closest-side, rgba(152,182,144,0.16), transparent)' }}
       />
 
-      <svg viewBox="0 0 240 40" className="relative w-60 h-10 overflow-visible" fill="none">
+      <svg viewBox="0 0 240 40" className="relative w-60 sm:w-[30rem] lg:w-[38rem] h-10 sm:h-20 lg:h-24 overflow-visible" fill="none">
         {variant === 'route' && (
           <>
             <path id={`road-${rawId}`} d="M6 25 H198" stroke={GREEN_FAINT} strokeWidth="1.6" strokeLinecap="round" strokeDasharray="1 5" />

@@ -1,86 +1,96 @@
 'use client';
 
-import { useLanguage } from '../../contexts/LanguageContext';
-import { SERVICE_CATEGORIES } from '../../data/services';
+const partners = [
+  {
+    name: 'OIIQ',
+    icon: (
+      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L2 12l10 10 10-10L12 2zm0 4.8l5.2 5.2-5.2 5.2L6.8 12 12 6.8z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Desjardins',
+    icon: (
+      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L1 21h22L12 2zm0 4.5l6.5 11.5H5.5L12 6.5z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Sun Life',
+    icon: (
+      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2" fill="none" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Croix Bleue',
+    icon: (
+      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'RAMQ',
+    icon: (
+      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Pharmaprix',
+    icon: (
+      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-15H9v10h2V7zm4 0h-2v10h2V7z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'SSQ Assurance',
+    icon: (
+      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l10 6-10 6-10-6 10-6zm0 15.5l-10-6v4.5l10 6 10-6v-4.5l-10 6z" />
+      </svg>
+    ),
+  },
+];
 
-/* ─── Bandeau de preuve ────────────────────────────────────────────────────
-   Was: four credential rows built out of `map.bullet2`, `map.footnote`,
-   `map.bullet3` and `patients.point3Title` — i.e. the exact sentences the
-   Dispatch section repeats 600px further down. Restating a claim twice makes
-   it weaker, not stronger, and none of it was measurable.
-
-   Now: four hard figures directly under the hero. The first two are computed
-   from the catalog so they can never drift; the last two restate credentials
-   the site already holds. Sits on the recessed ground tier, which is what
-   makes it read as a data band rather than the page's first section.
-   ---------------------------------------------------------------------- */
+// Duplicate for seamless loop
+const allPartners = [...partners, ...partners];
 
 export const LogoCloud = () => {
-  const { t } = useLanguage();
-
-  const totalTreatments = SERVICE_CATEGORIES.reduce(
-    (n, cat) => n + cat.services.length,
-    0
-  );
-
-  // `edges` is written out per cell rather than derived: a 2-col mobile /
-  // 4-col desktop grid needs different dividers at each breakpoint, and
-  // generating them emits conflicting border utilities whose winner depends
-  // on Tailwind's output order rather than on the class string.
-  const stats = [
-    {
-      value: String(SERVICE_CATEGORIES.length),
-      label: t('proof.specialtiesLabel'),
-      sub: t('proof.specialtiesSub'),
-      edges: 'border-b sm:border-b-0 border-r pr-5 sm:pr-7',
-    },
-    {
-      value: String(totalTreatments),
-      label: t('proof.treatmentsLabel'),
-      sub: t('proof.treatmentsSub'),
-      edges: 'border-b sm:border-b-0 sm:border-r pl-5 sm:pl-7 sm:pr-7',
-    },
-    {
-      value: t('proof.matchingValue'),
-      label: t('proof.matchingLabel'),
-      sub: t('proof.matchingSub'),
-      edges: 'border-r pr-5 sm:pl-7 sm:pr-7',
-    },
-    {
-      value: t('proof.certValue'),
-      label: t('proof.certLabel'),
-      sub: t('proof.certSub'),
-      edges: 'pl-5 sm:pl-7',
-    },
-  ];
-
   return (
-    /* No border-y and no flat fill: the band used to be a third tone boxed
-       between two others (#031226 hero → #061729 band → #0a1f38 ground), and the
-       two hairlines drew attention to both seams. It now ramps from the hero's
-       exact closing colour to the ground below, so it reads as the page settling
-       out of the hero rather than as a separate slab. */
-    <section
-      className="relative"
-      style={{
-        background:
-          'linear-gradient(180deg, #031226 0%, var(--color-ground-deep) 38%, var(--color-ground-deep) 62%, var(--color-ground) 100%)',
-      }}
-    >
-      <div className="container-custom">
-        <div className="grid grid-cols-2 sm:grid-cols-4">
-          {stats.map(({ value, label, sub, edges }) => (
+    <section className="relative w-full max-w-[1400px] mx-auto pt-20 pb-16 overflow-hidden">
+      <p className="text-xs font-semibold tracking-[0.25em] uppercase mb-12 text-center px-6 text-white/45">
+        Partenaires de confiance au Québec
+      </p>
+      <div
+        className="w-full relative flex items-center overflow-hidden"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+        }}
+      >
+        <div className="flex w-max" style={{ animation: 'marquee 40s linear infinite' }}>
+          {allPartners.map((p, i) => (
             <div
-              key={label}
-              className={`ms-rule-soft flex flex-col gap-2 py-7 sm:py-9 ${edges}`}
+              key={i}
+              className="flex items-center gap-3 text-white/40 hover:text-white transition-colors duration-300 cursor-pointer mx-12"
             >
-              <span className="ms-stat">{value}</span>
-              <span className="ms-label">{label}</span>
-              <span className="ms-meta max-w-[26ch]">{sub}</span>
+              {p.icon}
+              <span className="text-xl font-semibold tracking-tight whitespace-nowrap">{p.name}</span>
             </div>
           ))}
         </div>
       </div>
+      <style>{`
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+      `}</style>
     </section>
   );
 };

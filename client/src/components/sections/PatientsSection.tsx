@@ -1,144 +1,140 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Home, CalendarClock, ClipboardCheck, HeartHandshake } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
-
-/* ─── Patients ─────────────────────────────────────────────────────────────
-   Was: centred header, a 2+1 gallery, then the four points on a four-column
-   hairline grid — the same hairline grid used by the credential band above
-   and the services index below. Three instances of one device in one scroll
-   is what made the page read as a single repeating block.
-
-   Then: a captioned editorial spread, but the two columns were bottom-aligned
-   (`lg:items-end`). The photograph is ~480px and the prose beside it is much
-   shorter, so the whole text column was pushed to the floor of the grid and the
-   section opened on a large empty rectangle where its title should have been.
-
-   Now: the header is lifted out of the narrow column and opens the section at
-   full measure, so the section announces itself before the spread begins. The
-   two claims sit top-aligned beside the photograph as separately ruled blocks —
-   they read as two distinct claims rather than one grey slab, and a column that
-   starts level with the image cannot strand a void above itself.
-
-   Uses the base ground, between two recessed bands, so it reads as the
-   page's reading section.
-   ---------------------------------------------------------------------- */
-
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-function Caption({ kicker, text }: { kicker: string; text: string }) {
-  return (
-    <figcaption className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 border-t ms-rule pt-3">
-      <span className="text-[0.8125rem] font-semibold text-ink-2">{kicker}</span>
-      <span className="ms-meta">{text}</span>
-    </figcaption>
-  );
-}
 
 export function PatientsSection() {
   const { t } = useLanguage();
 
-  return (
-    <section id="patients" className="relative py-24 sm:py-32">
-      <div className="container-custom">
+  const points = [
+    { icon: Home, title: t('patients.point1Title'), desc: t('patients.point1Desc') },
+    { icon: CalendarClock, title: t('patients.point2Title'), desc: t('patients.point2Desc') },
+    { icon: ClipboardCheck, title: t('patients.point3Title'), desc: t('patients.point3Desc') },
+    { icon: HeartHandshake, title: t('patients.point4Title'), desc: t('patients.point4Desc') },
+  ];
 
-        {/* Section header — at full measure, above the spread. Previously this
-            lived inside the 5-col column, which cramped the title and left the
-            section without a proper opening. */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: EASE }}
-          className="max-w-[46rem] mb-12 sm:mb-16"
-        >
-          <p className="ms-eyebrow mb-4">{t('patients.badge')}</p>
-          <h2 className="ms-title mb-5">{t('patients.title')}</h2>
-          <p className="ms-lede">{t('patients.subtitle')}</p>
-        </motion.div>
+  // Intro text — reused in the mobile (beside image) and desktop (beside points) layouts
+  const intro = (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <p className="text-[10px] sm:text-sm font-semibold uppercase tracking-wider mb-2 sm:mb-3 text-[#98B690]">
+        {t('patients.badge')}
+      </p>
+      <h2
+        className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-3 sm:mb-5 text-white"
+        style={{ letterSpacing: '-0.03em' }}
+      >
+        {t('patients.title')}
+      </h2>
+      <p className="text-sm sm:text-lg font-light leading-relaxed text-white/70 mb-3 sm:mb-5">
+        {t('patients.subtitle')}
+      </p>
+      <p className="hidden sm:block text-xs sm:text-base font-light leading-relaxed text-white/55">
+        {t('patients.description')}
+      </p>
+    </motion.div>
+  );
 
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-14 lg:items-start">
-
-          {/* Lead frame */}
-          <motion.figure
-            initial={{ opacity: 0, scale: 0.985 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.85, ease: EASE }}
-            className="lg:col-span-7 m-0 flex flex-col gap-3 group"
+  // "How we help" points — reused in both layouts
+  const helpPoints = (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+      className="grid grid-cols-2 gap-4 sm:gap-6 lg:pt-4"
+    >
+      {points.map(({ icon: Icon, title, desc }) => (
+        <div key={title} className="flex flex-col gap-2.5">
+          <div
+            className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 [&_svg]:w-4 [&_svg]:h-4 sm:[&_svg]:w-5 sm:[&_svg]:h-5"
+            style={{
+              background: 'rgba(78,102,69,0.2)',
+              border: '1px solid rgba(152,182,144,0.35)',
+            }}
           >
-            <div className="overflow-hidden rounded-sm">
+            <Icon style={{ color: '#98B690' }} />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-[15px] font-semibold text-white leading-snug">{title}</p>
+            <p className="text-[11px] sm:text-sm font-light text-white/55 leading-relaxed mt-0.5">{desc}</p>
+          </div>
+        </div>
+      ))}
+    </motion.div>
+  );
+
+  return (
+    <section id="patients" className="relative py-14 sm:py-24 lg:py-28 overflow-hidden">
+      <div className="container-custom relative">
+
+        {/* ── Mobile layout: text + care photo side by side, then points ── */}
+        <div className="lg:hidden">
+          <div className="grid grid-cols-[1fr_0.85fr] gap-4 items-stretch mb-6">
+            {intro}
+            <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-xl min-h-[220px]">
               <img
                 src="/nurses/care-1.png"
                 alt="Infirmière MobiSoins rendant visite à une famille à domicile"
-                className="w-full h-[280px] sm:h-[400px] lg:h-[480px] object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+                className="absolute inset-0 w-full h-full object-cover object-center"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none" />
             </div>
-            <Caption kicker={t('patients.cap1Kicker')} text={t('patients.cap1Text')} />
-          </motion.figure>
-
-          {/* The argument. Still the same four ideas in the same order, but each
-              claim gets its own ruled block and a real heading — as one run of
-              dim body copy they were the lowest-contrast text on the page. */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-            className="lg:col-span-5 flex flex-col gap-8"
-          >
-            {[
-              {
-                title: t('patients.point1Title'),
-                body: `${t('patients.point1Desc')} ${t('patients.point2Desc')}`,
-              },
-              {
-                title: t('patients.point3Title'),
-                body: `${t('patients.point3Desc')} ${t('patients.point4Desc')}`,
-              },
-            ].map(({ title, body }) => (
-              <div key={title} className="border-t ms-rule pt-5">
-                <h3 className="ms-item-title mb-2.5">{title}</h3>
-                <p className="ms-body-sm max-w-[46ch]">{body}</p>
-              </div>
-            ))}
-          </motion.div>
+          </div>
+          {helpPoints}
         </div>
 
-        {/* Supporting frames */}
-        <div className="grid sm:grid-cols-2 gap-8 lg:gap-14 mt-10 sm:mt-14">
-          {[
-            {
-              src: '/nurses/nurse-blonde-kid.jpeg',
-              alt: 'Infirmière MobiSoins vaccinant une enfant',
-              kicker: t('patients.cap2Kicker'),
-              text: t('patients.cap2Text'),
-            },
-            {
-              src: '/nurses/nurse-06.jpeg',
-              alt: 'Infirmière MobiSoins arrivant au domicile avec sa trousse',
-              kicker: t('patients.cap3Kicker'),
-              text: t('patients.cap3Text'),
-            },
-          ].map(({ src, alt, kicker, text }, i) => (
-            <motion.figure
-              key={src}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ delay: i * 0.1, duration: 0.7, ease: EASE }}
-              className="m-0 flex flex-col gap-3 group"
-            >
-              <div className="overflow-hidden rounded-sm">
-                <img
-                  src={src}
-                  alt={alt}
-                  className="w-full h-[220px] sm:h-[280px] object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
-                />
+        {/* ── Desktop layout: header (text | points) + full gallery ── */}
+        <div className="hidden lg:block">
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-16">
+            {intro}
+            {helpPoints}
+          </div>
+
+          {/* Gallery — one cinematic care moment + one patient portrait */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="grid md:grid-cols-3 gap-4"
+          >
+            {/* Feature — care moment */}
+            <div className="md:col-span-2 relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group h-[520px]">
+              <img
+                src="/nurses/care-1.png"
+                alt="Infirmière MobiSoins rendant visite à une famille à domicile"
+                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
+              <div
+                className="absolute bottom-4 left-4 flex items-center gap-2.5 rounded-full px-4 py-2"
+                style={{
+                  background: 'rgba(3,18,38,0.55)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255,255,255,0.16)',
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-[#98B690]" />
+                <span className="text-sm font-medium text-white">{t('patients.badge')}</span>
               </div>
-              <Caption kicker={kicker} text={text} />
-            </motion.figure>
-          ))}
+            </div>
+
+            {/* Single patient portrait */}
+            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-xl group h-[520px]">
+              <img
+                src="/nurses/nurse-blonde-kid.jpeg"
+                alt="Infirmière MobiSoins vaccinant une enfant"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
