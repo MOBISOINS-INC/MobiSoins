@@ -46,7 +46,6 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://api.web3forms.com" crossOrigin="" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
-        <link rel="dns-prefetch" href="https://i.pravatar.cc" />
         <link rel="dns-prefetch" href="https://placehold.co" />
       </head>
       <body style={{ background: '#04142a' }}>
