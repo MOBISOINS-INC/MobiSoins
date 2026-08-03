@@ -22,10 +22,6 @@ const PatientsSection = dynamic(
   () => import('../components/sections/PatientsSection').then((m) => ({ default: m.PatientsSection })),
   { loading: () => <SectionLoader /> }
 );
-const Trust = dynamic(
-  () => import('../components/sections/Trust').then((m) => ({ default: m.Trust })),
-  { loading: () => <SectionLoader /> }
-);
 const Newsletter = dynamic(
   () => import('../components/sections/Newsletter').then((m) => ({ default: m.Newsletter })),
   { loading: () => <SectionLoader /> }
@@ -81,7 +77,6 @@ export default function Home() {
         <PatientsSection />
         <PricingCoverage />
         <FAQ />
-        <Trust />
         <Newsletter />
       </main>
       <Footer />
