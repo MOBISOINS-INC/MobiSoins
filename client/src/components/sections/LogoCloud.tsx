@@ -1,5 +1,7 @@
 'use client';
 
+import { useLanguage } from '../../contexts/LanguageContext';
+
 const partners = [
   {
     name: 'OIIQ',
@@ -64,10 +66,12 @@ const partners = [
 const allPartners = [...partners, ...partners];
 
 export const LogoCloud = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="relative w-full max-w-[1400px] mx-auto pt-20 pb-16 overflow-hidden">
       <p className="text-xs font-semibold tracking-[0.25em] uppercase mb-12 text-center px-6 text-white/45">
-        Partenaires de confiance au Québec
+        {t('logoCloud.title')}
       </p>
       <div
         className="w-full relative flex items-center overflow-hidden"

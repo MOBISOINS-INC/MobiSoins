@@ -2,7 +2,7 @@ import { LegalLayout } from './LegalLayout';
 
 export const CookiePolicy = () => {
   return (
-    <LegalLayout title="Politique des Cookies" lastUpdated="8 Avril 2026">
+    <LegalLayout title="Politique des cookies" lastUpdated="8 avril 2026">
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-white mb-4">1. Qu'est-ce qu'un Cookie ?</h2>
         <p className="mb-4">

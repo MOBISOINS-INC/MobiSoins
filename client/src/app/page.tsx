@@ -15,18 +15,21 @@ function SectionLoader() {
   );
 }
 
-const HowItWorks = dynamic(
-  () => import('../components/sections/HowItWorks').then((m) => ({ default: m.HowItWorks })),
-  { loading: () => <SectionLoader /> }
-);
+const VisitTimeline = dynamic(() => import('../components/sections/VisitTimeline'), {
+  loading: () => <SectionLoader />,
+});
 const PatientsSection = dynamic(
   () => import('../components/sections/PatientsSection').then((m) => ({ default: m.PatientsSection })),
   { loading: () => <SectionLoader /> }
 );
-const Newsletter = dynamic(
-  () => import('../components/sections/Newsletter').then((m) => ({ default: m.Newsletter })),
-  { loading: () => <SectionLoader /> }
-);
+const WaitlistSection = dynamic(() => import('../components/sections/WaitlistSection'), {
+  loading: () => <SectionLoader />,
+});
+// Client-only: the card sizes itself from a media query, so it must not be server-rendered.
+const LocationSpot = dynamic(() => import('../components/sections/LocationSpot'), {
+  ssr: false,
+  loading: () => <SectionLoader />,
+});
 const NursingMapSection = dynamic(
   () => import('../components/sections/NursingMapSection').then((m) => ({ default: m.NursingMapSection })),
   { loading: () => <SectionLoader /> }
@@ -46,15 +49,15 @@ export default function Home() {
           style={{ background: 'linear-gradient(180deg, #031226 0%, #0a1f38 22%, #0a1f38 100%)' }}
         >
           <LogoCloud />
-          <HowItWorks />
+          <VisitTimeline />
         </div>
 
-        <MobileSectionDivider />
+        <LocationSpot />
         <NursingMapSection />
         <MobileSectionDivider variant="route" />
         <PatientsSection />
         <MobileSectionDivider variant="plane" />
-        <Newsletter />
+        <WaitlistSection />
       </main>
       <Footer />
     </div>

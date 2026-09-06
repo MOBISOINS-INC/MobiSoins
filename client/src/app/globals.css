@@ -45,10 +45,24 @@
   --color-navy-300: #cbd5e1;
   --color-navy-400: #94a3b8;
   --color-navy-500: #64748b;
-  --color-navy-600: #475569;
-  --color-navy-700: #1e293b;
-  --color-navy-800: #1e293b;
-  --color-navy-900: #1a1a24;
+  --color-navy-600: #17458F;
+  --color-navy-700: #10336B;
+  --color-navy-800: #0B2247;
+  --color-navy-900: #06142C;
+  --color-navy-950: #030A18;
+
+  /* Dark landing palette (VisitTimeline / WaitlistSection) */
+  --color-royal: #1F5EFF;
+  --color-royal-400: #5B8CFF;
+  --color-royal-500: #2F6BFF;
+  --color-royal-600: #1749D9;
+  --color-royal-700: #1239B0;
+  --color-glow: #9CC4FF;
+  --color-sage: #98B690;
+  --color-sage-300: #B9CFB2;
+  --color-sage-600: #5E8A5B;
+  --color-mist: #B4C3DB;
+  --color-mist-dim: #7F90AB;
 
   --color-primary-light: #2d2d3a;
   --color-secondary: #10b981;
@@ -59,7 +73,9 @@
   --color-background-white: #ffffff;
 
   /* Fonts */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: var(--font-geist), "Inter", system-ui, sans-serif;
+  --font-serif: var(--font-instrument), Georgia, serif;
+  --font-mono: var(--font-geist-mono), "SF Mono", Menlo, monospace;
   --font-heading: "Inter", -apple-system, sans-serif;
   --font-accent: "Inter", -apple-system, sans-serif;
 
@@ -245,3 +261,39 @@
 .gpsmap-d45 { animation-delay: 4.5s;  }
 
 @keyframes gpsmap-move { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
+
+/* ── VisitTimeline / WaitlistSection: border beam, shimmer button, aurora, grid ── */
+@property --beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.beam { position: relative; isolation: isolate; }
+.beam::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; z-index: 1; pointer-events: none;
+  background: conic-gradient(from var(--beam), transparent 0 62%, #5B8CFF 78%, #98B690 88%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: beam 7s linear infinite;
+}
+@keyframes beam { to { --beam: 360deg; } }
+
+.shimmer {
+  position: relative; overflow: hidden; color: #fff;
+  background: linear-gradient(180deg, #2F6BFF 0%, #1749D9 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 12px 34px -12px rgba(31,94,255,.75);
+}
+.shimmer::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.32) 50%, transparent 70%);
+  transform: translateX(-120%); animation: shine 3.2s ease-in-out infinite;
+}
+@keyframes shine { 0% { transform: translateX(-120%); } 45%, 100% { transform: translateX(120%); } }
+
+.aurora { position: absolute; border-radius: 9999px; filter: blur(90px); pointer-events: none; animation: drift 16s ease-in-out infinite alternate; }
+@keyframes drift { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(60px,-40px,0) scale(1.15); } }
+.grid-lines {
+  background-image: linear-gradient(rgba(156,196,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(156,196,255,.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@media (prefers-reduced-motion: reduce) { .beam::before, .shimmer::before, .aurora { animation: none; } }
+
+/* Phones: skip the drifting blur animation, it is expensive on low-end GPUs */
+@media (max-width: 767px) { .aurora { animation: none; } }

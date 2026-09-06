@@ -1,6 +1,17 @@
 import type { Metadata } from 'next';
+import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import './globals.css';
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
+const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' });
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'MobiSoins - Soins Infirmiers à Domicile au Québec',
@@ -42,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}>
       <head>
         <link rel="preconnect" href="https://api.web3forms.com" crossOrigin="" />
         <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />

@@ -4,6 +4,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import { BrandLogo } from '../ui/BrandLogo';
+import { useLanguage } from '../../contexts/LanguageContext';
 /* ─── Inline SVG social icons ────────────────────────────────── */
 
 const SvgFacebook = ({ className }: { className?: string }) => (
@@ -16,43 +17,13 @@ const SvgTiktok = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 1.6 1.2 2.9 2.6 3.7.7.4 1.5.7 2.4.8v3.1a8.6 8.6 0 0 1-4.5-1.4v6.1a6.1 6.1 0 1 1-6.1-6.1c.3 0 .7 0 1 .1v3.2a2.9 2.9 0 1 0 2 2.8V3h2.6z"/></svg>
 );
 
-/* ─── Link data ───────────────────────────────────────────────── */
+/* ─── Types ───────────────────────────────────────────────────── */
 
-const footerSections = [
-  {
-    label: 'Produit',
-    links: [
-      { title: 'Services', href: '/services' },
-      { title: 'Tarification', href: '#pricing' },
-      { title: 'Comment ça marche', href: '#how-it-works' },
-    ],
-  },
-  {
-    label: 'Entreprise',
-    links: [
-      { title: 'À propos', href: '/apropos' },
-      { title: 'Articles', href: '/articles' },
-      { title: 'FAQ', href: '/faq' },
-    ],
-  },
-  {
-    label: 'Légal',
-    links: [
-      { title: 'Confidentialité', href: '/confidentialite' },
-      { title: 'Conditions', href: '/conditions' },
-      { title: 'Cookies', href: '/cookies' },
-      { title: 'Sécurité', href: '#' },
-    ],
-  },
-  {
-    label: 'Réseaux sociaux',
-    links: [
-      { title: 'Instagram', href: 'https://www.instagram.com/mobisoins/', icon: SvgInstagram },
-      { title: 'Facebook', href: 'https://www.facebook.com/p/MobiSoins-Inc-61562813077289/', icon: SvgFacebook },
-      { title: 'TikTok', href: 'https://www.tiktok.com/@mobisoins', icon: SvgTiktok },
-    ],
-  },
-];
+type FooterLink = {
+  title: string;
+  href: string;
+  icon?: (props: { className?: string }) => ReactNode;
+};
 
 /* ─── Animated container ─────────────────────────────────────── */
 
@@ -83,6 +54,43 @@ function AnimatedContainer({ className, delay = 0.1, children }: AnimatedContain
 /* ─── Footer ─────────────────────────────────────────────────── */
 
 export const Footer = () => {
+  const { t } = useLanguage();
+
+  // Link columns. Absolute "/#visit" so the anchor also works from the other pages.
+  const footerSections: { label: string; links: FooterLink[] }[] = [
+    {
+      label: t('footer.product'),
+      links: [
+        { title: t('footer.services'), href: '/services' },
+        { title: t('footer.howItWorks'), href: '/#visit' },
+      ],
+    },
+    {
+      label: t('footer.company'),
+      links: [
+        { title: t('footer.aboutUs'), href: '/apropos' },
+        { title: t('footer.articles'), href: '/articles' },
+        { title: t('footer.faq'), href: '/faq' },
+      ],
+    },
+    {
+      label: t('footer.legal'),
+      links: [
+        { title: t('footer.privacy'), href: '/confidentialite' },
+        { title: t('footer.terms'), href: '/conditions' },
+        { title: t('footer.cookies'), href: '/cookies' },
+      ],
+    },
+    {
+      label: t('footer.social'),
+      links: [
+        { title: 'Instagram', href: 'https://www.instagram.com/mobisoins/', icon: SvgInstagram },
+        { title: 'Facebook', href: 'https://www.facebook.com/p/MobiSoins-Inc-61562813077289/', icon: SvgFacebook },
+        { title: 'TikTok', href: 'https://www.tiktok.com/@mobisoins', icon: SvgTiktok },
+      ],
+    },
+  ];
+
   return (
     <footer
       className="relative w-full"
@@ -99,10 +107,10 @@ export const Footer = () => {
             </Link>
             <div className="flex flex-col gap-2">
               <p className="text-xs sm:text-sm font-light leading-relaxed max-w-xs text-white/55">
-                Une plateforme IA de soins infirmiers à domicile au Québec. Connecte des infirmières OIIQ certifiées avec des patients en quelques minutes.
+                {t('footer.description')}
               </p>
               <p className="text-[11px] font-light text-white/40">
-                © {new Date().getFullYear()} MobiSoins Inc. Tous droits réservés.
+                © {new Date().getFullYear()} MobiSoins Inc. {t('footer.allRightsReserved')}
               </p>
             </div>
           </AnimatedContainer>
@@ -129,9 +137,7 @@ export const Footer = () => {
                           onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
                           onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
                         >
-                          {'icon' in link && link.icon && (
-                            <link.icon className="w-3.5 h-3.5 shrink-0" />
-                          )}
+                          {link.icon && <link.icon className="w-3.5 h-3.5 shrink-0" />}
                           {link.title}
                         </a>
                       </li>
@@ -150,7 +156,7 @@ export const Footer = () => {
           style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
         >
           <p className="text-xs font-light" style={{ color: 'rgba(255,255,255,0.45)' }}>
-            Fait avec soin au Québec 🍁
+            {t('footer.madeIn')} 🍁
           </p>
         </div>
       </div>

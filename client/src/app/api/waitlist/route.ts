@@ -8,7 +8,7 @@ const waitlistSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
-  role: z.enum(['Patient', 'Nurse']),
+  role: z.enum(['Patient', 'Nurse', 'Employer']),
   city: z.string().min(1, 'City is required'),
   language: z.enum(['Français', 'English']),
   consent: z.literal(true, { message: 'Consent is required' }),
